@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Reincarnation of a JavaScript library that generates dynamic ASCII art on the web",
   "main": "lettercrap.js",
+  "scripts": {
+    "dev": "http-server -s -o -c-1 -p 8080"
+  },
   "author": {
     "name": "Ozren Dabić",
     "email": "ozren.dabic@usi.ch",
@@ -15,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/dabico/lettercrap/issues"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
 }
