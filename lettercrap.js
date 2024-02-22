@@ -6,29 +6,6 @@
     const likelihoodOfChangingExistingText = 0.1;
     const randomChoice = list => list[Math.floor(Math.random() * list.length)];
 
-    function createImageURL(text) {
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        const fontsize = measureTextBinaryMethod(text, 'monospace', 0, 10, canvas.width);
-        canvas.height = fontsize + 1;
-        canvas.width = context.measureText(text).width + 2;
-        context.fillText(text, 1, fontsize);
-        return canvas.toDataURL();
-
-        // https://jsfiddle.net/be6ppdre/29/
-        function measureTextBinaryMethod(text, fontface, min, max, desiredWidth) {
-            if (max - min < 1) return min;
-            const pixels = min + (max - min) / 2;
-            context.font = `${pixels}px ${fontface}`;
-            const measuredWidth = context.measureText(text).width;
-
-            const condition = measuredWidth > desiredWidth;
-            const minChoice = condition ? min : pixels;
-            const maxChoice = condition ? pixels : max;
-            return measureTextBinaryMethod(text, fontface, minChoice, maxChoice, desiredWidth);
-        }
-    }
-
     function getTextContentWithImageAtSize(image, width, height, existingText, words, letters) {
         existingText = existingText?.replace(/\r?\n|\r/g, '') || null;
         const shouldReplaceWord = () => Math.random() < likelihoodOfReplacingWord;
@@ -37,8 +14,9 @@
         const canvas = document.createElement('canvas');
         canvas.width = width / charWidth;
         canvas.height = height / charHeight;
-        canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
-        const data = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+        const context = canvas.getContext('2d');
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        const data = context.getImageData(0, 0, canvas.width, canvas.height);
         let chars = "";
         let startOfFilledInSequence = 0;
         let i = 0;
@@ -100,10 +78,34 @@
         img.onload = () => render(element, img, null);
     }
 
+    function createImageURL(text, font = 'monospace') {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        const fontsize = measureTextBinaryMethod(text, 0, 10, canvas.width);
+        canvas.height = fontsize + 1;
+        canvas.width = context.measureText(text).width + 2;
+        context.fillText(text, 1, fontsize);
+        return canvas.toDataURL();
+
+        // https://jsfiddle.net/be6ppdre/29/
+        function measureTextBinaryMethod(text, min, max, desiredWidth) {
+            if (max - min < 1) return min;
+            const pixels = min + (max - min) / 2;
+            context.font = `${pixels}px ${font}`;
+            const measuredWidth = context.measureText(text).width;
+
+            const condition = measuredWidth > desiredWidth;
+            const minChoice = condition ? min : pixels;
+            const maxChoice = condition ? pixels : max;
+            return measureTextBinaryMethod(text, minChoice, maxChoice, desiredWidth);
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         for (const textElement of document.querySelectorAll('[data-lettercrap-text]')) {
             const text = textElement.getAttribute('data-lettercrap-text');
-            const data = createImageURL(text);
+            const font = textElement.getAttribute('data-lettercrap-font') || undefined;
+            const data = createImageURL(text, font);
             textElement.setAttribute('data-lettercrap', data);
             textElement.removeAttribute('data-lettercrap-text');
         }
