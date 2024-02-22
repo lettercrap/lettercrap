@@ -1,15 +1,17 @@
 # Lettercrap
 
-_Lettercrap_ is a Javascript library that generates dynamic ascii art on the web, using an image mask. It looks like this:
+_Lettercrap_ is a JavaScript library that uses an image mask to generate dynamic ASCII art on the web. It looks like this:
 
-<img src="https://raw.githubusercontent.com/nate-parrott/lettercrap/gh-pages/crap.gif" width="400px">
-
-[Here's a live demo.](https://nate-parrott.github.io/lettercrap)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/dabico/lettercrap/assets/34584913/5d9e21ea-9301-49d4-a5c0-e685b762590d">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/dabico/lettercrap/assets/34584913/62f87c22-25b6-45f5-b8a4-6715ea9d394e">
+  <img alt="GIF showing the animated library name" src="https://github.com/dabico/lettercrap/assets/34584913/5d9e21ea-9301-49d4-a5c0-e685b762590d">
+</picture>
 
 ## Usage
 
 To use _Lettercrap_, import `lettercrap.js` and `lettercrap.css`. Create a `div` with the `data-letter-crap` 
-attribute with the source of a black-and-white image, which will serve as the shape of the generated ascii art:
+attribute with the source of a black-and-white image, which will serve as the shape of the generated ASCII art:
 
 	<div data-letter-crap='abcs.png' style='width: 500px; height: 200px'></div>
 
@@ -33,17 +35,11 @@ with the `data-lettercrap-text` attribute:
 
 	<div data-lettercrap-text='CHECK IT OUT' data-lettercrap-aspect-ratio='0.3'></div>
 
-Check out the `examples/index.html` file to see exactly how this all fits together.
+Check out the `examples/index.html` file to see how this all fits together.
 
 ## Development
-To get the example working locally, you need to host it on localhost somehow. This is due to the security
-features involved with pulling images from local storage, unfortunately. 
+To get the example working locally, you can run: 
 
-Here are a few of the commands that work, depending on what software you have in your environment. Just
-be sure to run them from the lettercrap folder, not the example folder:
-- PHP: `php -S localhost:8080`
-- Python 2: `python -m SimpleHTTPServer 8080`
-- Python 3: `python -m http.server 8080`
-- Node.js: `npm install http-server -g` then `http-server`
-
-Then visit `http://localhost:8080/example` to see it in action.
+```bash
+npm run dev
+```
