@@ -96,18 +96,19 @@
     function initElement(element) {
         const img = new Image();
         img.crossOrigin = 'anonymous';
-        img.src = element.getAttribute('data-letter-crap');
+        img.src = element.getAttribute('data-lettercrap');
         img.onload = () => render(element, img, null);
     }
 
     document.addEventListener('DOMContentLoaded', function() {
         for (const textElement of document.querySelectorAll('[data-lettercrap-text]')) {
             const text = textElement.getAttribute('data-lettercrap-text');
-            const imageURL = createImageURL(text);
-            textElement.setAttribute('data-letter-crap', imageURL);
+            const data = createImageURL(text);
+            textElement.setAttribute('data-lettercrap', data);
+            textElement.removeAttribute('data-lettercrap-text');
         }
 
-        for (const element of document.querySelectorAll('[data-letter-crap]')) {
+        for (const element of document.querySelectorAll('[data-lettercrap]')) {
             initElement(element);
         }
     });
