@@ -18,46 +18,40 @@
         // https://jsfiddle.net/be6ppdre/29/
         function measureTextBinaryMethod(text, fontface, min, max, desiredWidth) {
             if (max - min < 1) return min;
-            const test = min + ((max - min) / 2);
-            context.font = `${test}px ${fontface}`;
+            const pixels = min + (max - min) / 2;
+            context.font = `${pixels}px ${fontface}`;
             const measuredWidth = context.measureText(text).width;
 
             const condition = measuredWidth > desiredWidth;
-            const minChoice = condition ? min : test;
-            const maxChoice = condition ? test : max;
+            const minChoice = condition ? min : pixels;
+            const maxChoice = condition ? pixels : max;
             return measureTextBinaryMethod(text, fontface, minChoice, maxChoice, desiredWidth);
         }
     }
 
-    function initElement(element) {
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.src = element.getAttribute('data-letter-crap');
-        img.onload = () => render(element, img, null);
-    }
-
     function getTextContentWithImageAtSize(image, width, height, existingText, words, letters) {
-        existingText = existingText ? existingText.replace(/\r?\n|\r/g, '') : null;
-        const shouldReplaceExisting = () => !existingText || Math.random() < likelihoodOfChangingExistingText;
+        existingText = existingText?.replace(/\r?\n|\r/g, '') || null;
+        const shouldReplaceWord = () => Math.random() < likelihoodOfReplacingWord;
+        const shouldReplaceExistingText = () => !existingText || Math.random() < likelihoodOfChangingExistingText;
 
         const canvas = document.createElement('canvas');
-        canvas.width = parseInt(width / charWidth);
-        canvas.height = parseInt(height / charHeight);
+        canvas.width = width / charWidth;
+        canvas.height = height / charHeight;
         canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
         const data = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
         let chars = "";
         let startOfFilledInSequence = 0;
         let i = 0;
 
-        for (let y = 0; y < data.height; y++) {
-            for (let x = 0; x < data.width; x++) {
-                let black = data.data[i * 4] < 120;
-                let transparent = data.data[i * 4 +3] < 50;
+        for (const _y of Array(data.height).keys()) {
+            for (const _x of Array(data.width).keys()) {
+                const black = data.data[i * 4] < 120;
+                const transparent = data.data[i * 4 + 3] < 50;
                 if (black && !transparent) {
                     if (startOfFilledInSequence === null) startOfFilledInSequence = i;
-                    chars += shouldReplaceExisting() ? randomChoice(letters) : existingText[i];
-                    if (words.length > 0 && Math.random() < likelihoodOfReplacingWord && shouldReplaceExisting()) {
-                        let word = randomChoice(words);
+                    chars += shouldReplaceExistingText() ? randomChoice(letters) : existingText[i];
+                    if (words.length > 0 && shouldReplaceWord() && shouldReplaceExistingText()) {
+                        const word = randomChoice(words);
                         if (i + 1 - startOfFilledInSequence >= word.length) {
                             chars = chars.substring(0, chars.length - word.length) + word;
                         }
@@ -82,19 +76,28 @@
 
         const words = element.getAttribute('data-lettercrap-words')?.split(' ') || [];
         const letters = element.getAttribute('data-lettercrap-letters') || '0101010101';
-        const existingTextCondition = !!prev && prev.width === element.clientWidth && prev.height === element.clientHeight;
+        const existingTextCondition = !!prev &&
+            prev.width === element.clientWidth &&
+            prev.height === element.clientHeight;
         const existingText = existingTextCondition ? prev.text : null;
         const text = getTextContentWithImageAtSize(
             image, element.clientWidth, element.clientHeight, existingText, words, letters
         );
 
         element.textContent = text;
-        const data = {
+        const callback = () => render(element, image, {
             text: text,
             width: element.clientWidth,
             height: element.clientHeight,
-        };
-        setTimeout(() => render(element, image, data), updateInterval);
+        });
+        setTimeout(callback, updateInterval);
+    }
+
+    function initElement(element) {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.src = element.getAttribute('data-letter-crap');
+        img.onload = () => render(element, img, null);
     }
 
     document.addEventListener('DOMContentLoaded', function() {
