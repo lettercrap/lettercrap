@@ -78,35 +78,48 @@
         img.onload = () => render(element, img, null);
     }
 
-    function createImageURL(text, font = 'monospace') {
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        const fontsize = measureTextBinaryMethod(text, 0, 10, canvas.width);
-        canvas.height = fontsize + 1;
-        canvas.width = context.measureText(text).width + 2;
-        context.fillText(text, 1, fontsize);
-        return canvas.toDataURL();
-
-        // https://jsfiddle.net/be6ppdre/29/
-        function measureTextBinaryMethod(text, min, max, desiredWidth) {
-            if (max - min < 1) return min;
-            const pixels = min + (max - min) / 2;
-            context.font = `${pixels}px ${font}`;
-            const measuredWidth = context.measureText(text).width;
-
-            const condition = measuredWidth > desiredWidth;
-            const minChoice = condition ? min : pixels;
-            const maxChoice = condition ? pixels : max;
-            return measureTextBinaryMethod(text, minChoice, maxChoice, desiredWidth);
-        }
+    async function getImageData(svg) {
+        return new Promise(resolve => {
+            const image = new Image();
+            const serializer = new XMLSerializer();
+            const serialized = serializer.serializeToString(svg);
+            image.src = `data:image/svg+xml;base64,${btoa(serialized)}`;
+            image.onload = () => {
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                const width = svg.getAttribute("width") * 10;
+                const height = svg.getAttribute("height") * 10;
+                canvas.width = width;
+                canvas.height = height;
+                context.drawImage(image, 0, 0, width, height);
+                resolve(canvas.toDataURL());
+            }
+        });
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    function createSVG(content = 'LETTERCRAP', font_family = 'monospace') {
+        const namespace = "http://www.w3.org/2000/svg";
+        const svg = document.createElementNS(namespace, 'svg');
+        const text = document.createElementNS(namespace, 'text');
+        text.setAttributeNS(null, 'y', '10');
+        text.setAttributeNS(null, 'font-family', font_family);
+        text.textContent = content;
+        svg.appendChild(text);
+        document.body.appendChild(svg);
+        const bounding_box = text.getBBox();
+        document.body.removeChild(svg);
+        svg.setAttributeNS(null, 'height', bounding_box.height.toString());
+        svg.setAttributeNS(null, 'width', bounding_box.width.toString());
+        return svg;
+    }
+
+    document.addEventListener('DOMContentLoaded', async function() {
         for (const textElement of document.querySelectorAll('[data-lettercrap-text]')) {
-            const text = textElement.getAttribute('data-lettercrap-text');
+            const text = textElement.getAttribute('data-lettercrap-text') || undefined;
             const font = textElement.getAttribute('data-lettercrap-font') || undefined;
-            const data = createImageURL(text, font);
-            textElement.setAttribute('data-lettercrap', data);
+            const svg = createSVG(text, font);
+            const data = await getImageData(svg);
+            textElement.setAttribute('data-lettercrap', data.toString());
             textElement.removeAttribute('data-lettercrap-text');
         }
 
