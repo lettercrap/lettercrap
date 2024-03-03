@@ -1,0 +1,12 @@
+.git/
+.github/
+.idea/
+.vscode/
+assets/
+node_modules/
+
+.gitignore
+.npmignore
+.nojekyll
+
+*.html
