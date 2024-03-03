@@ -120,7 +120,7 @@ const Lettercrap = (function() {
         const shouldReplaceWord = () => Math.random() < default_replace_word_probability;
         const shouldReplaceExistingText = () => {
             return !existingText || Math.random() < default_replace_existing_text_probability;
-        }
+        };
 
         const canvas = document.createElement('canvas');
         canvas.width = width / default_char_width;
