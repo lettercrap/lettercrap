@@ -2,6 +2,8 @@
 const Lettercrap = (function() {
 
     const default_content = 'LETTERCRAP';
+    const default_letters = '01';
+    const default_words = [];
     const default_font_family = 'monospace';
     const default_font_weight = 'normal';
     const default_svg_namespace = 'http://www.w3.org/2000/svg';
@@ -83,37 +85,31 @@ const Lettercrap = (function() {
             img.crossOrigin = 'anonymous';
             img.src = element.getAttribute('data-lettercrap');
             img.onload = () => {
-                const id = render(element, img, null);
+                const id = render(element, img);
                 resolve(id);
             };
         });
     }
 
-    function render(element, image, prev) {
+    function render(element, image, prev = null) {
         const aspect = element.hasAttribute('data-lettercrap-aspect-ratio')
             ? parseFloat(element.getAttribute('data-lettercrap-aspect-ratio'))
             : image.height / image.width;
         element.style.height = `${element.clientWidth * aspect}px`;
 
-        const update_interval = element.getAttribute('data-lettercrap-update-interval') || default_update_interval;
-
-        const words = element.getAttribute('data-lettercrap-words')?.split(' ') || [];
-        const letters = element.getAttribute('data-lettercrap-letters') || '0101010101';
-        const existingTextCondition = !!prev &&
-            prev.width === element.clientWidth &&
-            prev.height === element.clientHeight;
-        const existingText = existingTextCondition ? prev.text : null;
+        const letters = element.getAttribute('data-lettercrap-letters') || default_letters;
+        const words = element.getAttribute('data-lettercrap-words')?.split(' ') || default_words;
+        const interval = element.getAttribute('data-lettercrap-update-interval') || default_update_interval;
+        const dimensions = { width: element.clientWidth, height: element.clientHeight };
+        const is_base_case = !!prev && prev.width === dimensions.width && prev.height === dimensions.height;
+        const existing_text = is_base_case ? prev.text : null;
         const text = getTextContentWithImageAtSize(
-            image, element.clientWidth, element.clientHeight, existingText, words, letters
+            image, dimensions.width, dimensions.height, existing_text, words, letters
         );
 
         element.textContent = text;
-        const callback = () => render(element, image, {
-            text: text,
-            width: element.clientWidth,
-            height: element.clientHeight,
-        });
-        return setTimeout(callback, update_interval);
+        const callback = () => render(element, image, { text, ...dimensions });
+        return setTimeout(callback, interval);
     }
 
     function getTextContentWithImageAtSize(image, width, height, existingText, words, letters) {
