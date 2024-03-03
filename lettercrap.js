@@ -95,6 +95,8 @@ const Lettercrap = (function() {
             : image.height / image.width;
         element.style.height = `${element.clientWidth * aspect}px`;
 
+        const update_interval = element.getAttribute('data-lettercrap-update-interval') || default_update_interval;
+
         const words = element.getAttribute('data-lettercrap-words')?.split(' ') || [];
         const letters = element.getAttribute('data-lettercrap-letters') || '0101010101';
         const existingTextCondition = !!prev &&
@@ -111,7 +113,7 @@ const Lettercrap = (function() {
             width: element.clientWidth,
             height: element.clientHeight,
         });
-        return setTimeout(callback, default_update_interval);
+        return setTimeout(callback, update_interval);
     }
 
     function getTextContentWithImageAtSize(image, width, height, existingText, words, letters) {
