@@ -13,7 +13,7 @@ const Lettercrap = (function() {
     }
 
     async function initTextElement(element) {
-        convertTextToImageElement(element).then(() => initElement(element));
+        convertTextToImageElement(element).then(initElement);
     }
 
     async function convertTextToImageElement(element) {
@@ -26,6 +26,7 @@ const Lettercrap = (function() {
         element.removeAttribute('data-lettercrap-text');
         element.removeAttribute('data-lettercrap-font-family');
         element.removeAttribute('data-lettercrap-font-weight');
+        return element;
     }
 
     async function createSVG(content = 'LETTERCRAP', font_family = 'monospace', font_weight = 'normal') {
