@@ -71,11 +71,16 @@
         setTimeout(callback, updateInterval);
     }
 
-    function initElement(element) {
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.src = element.getAttribute('data-lettercrap');
-        img.onload = () => render(element, img, null);
+    async function initElement(element) {
+        return new Promise(resolve => {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.src = element.getAttribute('data-lettercrap');
+            img.onload = () => {
+                render(element, img, null);
+                resolve();
+            }
+        });
     }
 
     async function getImageData(svg) {
@@ -97,34 +102,42 @@
         });
     }
 
-    function createSVG(content = 'LETTERCRAP', font_family = 'monospace') {
-        const namespace = "http://www.w3.org/2000/svg";
-        const svg = document.createElementNS(namespace, 'svg');
-        const text = document.createElementNS(namespace, 'text');
-        text.setAttributeNS(null, 'y', '10');
-        text.setAttributeNS(null, 'font-family', font_family);
-        text.textContent = content;
-        svg.appendChild(text);
-        document.body.appendChild(svg);
-        const bounding_box = text.getBBox();
-        document.body.removeChild(svg);
-        svg.setAttributeNS(null, 'height', bounding_box.height.toString());
-        svg.setAttributeNS(null, 'width', bounding_box.width.toString());
-        return svg;
+    async function createSVG(content = 'LETTERCRAP', font_family = 'monospace') {
+        return new Promise(resolve => {
+            const namespace = "http://www.w3.org/2000/svg";
+            const svg = document.createElementNS(namespace, 'svg');
+            const text = document.createElementNS(namespace, 'text');
+            text.setAttributeNS(null, 'y', '10');
+            text.setAttributeNS(null, 'font-family', font_family);
+            text.textContent = content;
+            svg.appendChild(text);
+            document.body.appendChild(svg);
+            const bounding_box = text.getBBox();
+            document.body.removeChild(svg);
+            svg.setAttributeNS(null, 'height', bounding_box.height.toString());
+            svg.setAttributeNS(null, 'width', bounding_box.width.toString());
+            return resolve(svg);
+        });
     }
 
-    document.addEventListener('DOMContentLoaded', async function() {
-        for (const textElement of document.querySelectorAll('[data-lettercrap-text]')) {
-            const text = textElement.getAttribute('data-lettercrap-text') || undefined;
-            const font = textElement.getAttribute('data-lettercrap-font') || undefined;
-            const svg = createSVG(text, font);
-            const data = await getImageData(svg);
-            textElement.setAttribute('data-lettercrap', data.toString());
-            textElement.removeAttribute('data-lettercrap-text');
-        }
+    async function convertTextToImageElement(element) {
+        const text = element.getAttribute('data-lettercrap-text') || undefined;
+        const font = element.getAttribute('data-lettercrap-font') || undefined;
+        const svg = await createSVG(text, font);
+        const data = await getImageData(svg);
+        element.setAttribute('data-lettercrap', data.toString());
+        element.removeAttribute('data-lettercrap-text');
+        element.removeAttribute('data-lettercrap-font');
+    }
 
-        for (const element of document.querySelectorAll('[data-lettercrap]')) {
-            initElement(element);
-        }
-    });
+    async function initTextElement(element) {
+        convertTextToImageElement(element).then(() => initElement(element));
+    }
+
+    async function init() {
+        document.querySelectorAll('[data-lettercrap]').forEach(initElement);
+        document.querySelectorAll('[data-lettercrap-text]').forEach(initTextElement);
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
 })()
