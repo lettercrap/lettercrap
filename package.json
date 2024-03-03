@@ -8,6 +8,9 @@
     "lint:js": "eslint lettercrap.js",
     "lint:css": "stylelint lettercrap.css",
     "lint": "npm-run-all lint:*",
+    "minify:js": "uglifyjs --compress --mangle --webkit --output lettercrap.min.js -- lettercrap.js",
+    "minify:css": "cleancss lettercrap.css --output lettercrap.min.css",
+    "minify": "npm-run-all --parallel minify:*",
     "dev": "http-server -s -o -c-1 -p 8080"
   },
   "author": {
@@ -25,9 +28,11 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "clean-css": "^5.3.3",
     "eslint": "^8.57.0",
     "http-server": "^14.1.1",
     "npm-run-all": "^4.1.5",
-    "stylelint": "^16.2.1"
+    "stylelint": "^16.2.1",
+    "uglify-js": "^3.17.4"
   }
 }
