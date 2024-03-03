@@ -1,0 +1,22 @@
+name: 'Check CSS files with Stylelint'
+on:
+  pull_request:
+    paths:
+      - '**/*.css'
+
+jobs:
+  stylelint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run Stylelint
+        run: npm run lint:css
