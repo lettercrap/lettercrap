@@ -1,11 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 const Lettercrap = (function() {
 
-    const charWidth = 6;
-    const charHeight = 10;
-    const updateInterval = 150;
-    const likelihoodOfReplacingWord = 0.05;
-    const likelihoodOfChangingExistingText = 0.1;
+    const default_char_width = 6;
+    const default_char_height = 10;
+    const default_update_interval = 150;
 
     return { initElement, initTextElement, init };
 
@@ -103,18 +101,18 @@ const Lettercrap = (function() {
             width: element.clientWidth,
             height: element.clientHeight,
         });
-        return setTimeout(callback, updateInterval);
+        return setTimeout(callback, default_update_interval);
     }
 
     function getTextContentWithImageAtSize(image, width, height, existingText, words, letters) {
         existingText = existingText?.replace(/\r?\n|\r/g, '') || null;
         const randomChoice = list => list[Math.floor(Math.random() * list.length)];
-        const shouldReplaceWord = () => Math.random() < likelihoodOfReplacingWord;
-        const shouldReplaceExistingText = () => !existingText || Math.random() < likelihoodOfChangingExistingText;
+        const shouldReplaceWord = () => Math.random() < 0.05;
+        const shouldReplaceExistingText = () => !existingText || Math.random() < 0.1;
 
         const canvas = document.createElement('canvas');
-        canvas.width = width / charWidth;
-        canvas.height = height / charHeight;
+        canvas.width = width / default_char_width;
+        canvas.height = height / default_char_height;
         const context = canvas.getContext('2d');
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
         const data = context.getImageData(0, 0, canvas.width, canvas.height);
