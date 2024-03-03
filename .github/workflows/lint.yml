@@ -18,5 +18,5 @@ jobs:
           cache-dependency-path: 'package-lock.json'
       - name: Install Dependencies
         run: npm ci
-      - name: Run Stylelint
+      - name: Lint all files
         run: npm run lint
