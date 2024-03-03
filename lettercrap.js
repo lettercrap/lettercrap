@@ -103,13 +103,14 @@ const Lettercrap = (function() {
         });
     }
 
-    async function createSVG(content = 'LETTERCRAP', font_family = 'monospace') {
+    async function createSVG(content = 'LETTERCRAP', font_family = 'monospace', font_weight = 'normal') {
         return new Promise(resolve => {
             const namespace = "http://www.w3.org/2000/svg";
             const svg = document.createElementNS(namespace, 'svg');
             const text = document.createElementNS(namespace, 'text');
             text.setAttributeNS(null, 'y', '10');
             text.setAttributeNS(null, 'font-family', font_family);
+            text.setAttributeNS(null, 'font-weight', font_weight);
             text.textContent = content;
             svg.appendChild(text);
             document.body.appendChild(svg);
@@ -123,12 +124,14 @@ const Lettercrap = (function() {
 
     async function convertTextToImageElement(element) {
         const text = element.getAttribute('data-lettercrap-text') || undefined;
-        const font = element.getAttribute('data-lettercrap-font') || undefined;
-        const svg = await createSVG(text, font);
+        const font_family = element.getAttribute('data-lettercrap-font-family') || undefined;
+        const font_weight = element.getAttribute('data-lettercrap-font-weight') || undefined;
+        const svg = await createSVG(text, font_family, font_weight);
         const data = await getImageData(svg);
         element.setAttribute('data-lettercrap', data.toString());
         element.removeAttribute('data-lettercrap-text');
-        element.removeAttribute('data-lettercrap-font');
+        element.removeAttribute('data-lettercrap-font-family');
+        element.removeAttribute('data-lettercrap-font-weight');
     }
 
     async function initTextElement(element) {
