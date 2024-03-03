@@ -5,8 +5,8 @@
   "main": "lettercrap.js",
   "style": "lettercrap.css",
   "scripts": {
-    "lint:js": "eslint .",
-    "lint:css": "stylelint .",
+    "lint:js": "eslint lettercrap.js",
+    "lint:css": "stylelint lettercrap.css",
     "lint": "npm-run-all lint:*",
     "dev": "http-server -s -o -c-1 -p 8080"
   },
