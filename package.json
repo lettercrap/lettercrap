@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Reincarnation of a JavaScript library that generates dynamic ASCII art on the web",
   "main": "lettercrap.js",
+  "style": "lettercrap.css",
   "scripts": {
     "dev": "http-server -s -o -c-1 -p 8080"
   },
