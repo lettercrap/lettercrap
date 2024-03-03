@@ -18,7 +18,7 @@ const Lettercrap = (function() {
         const context = canvas.getContext('2d');
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
         const data = context.getImageData(0, 0, canvas.width, canvas.height);
-        let chars = "";
+        let chars = '';
         let startOfFilledInSequence = 0;
         let i = 0;
 
@@ -36,12 +36,12 @@ const Lettercrap = (function() {
                         }
                     }
                 } else {
-                    chars += " ";
+                    chars += ' ';
                     startOfFilledInSequence = null;
                 }
                 i++;
             }
-            chars += "\n";
+            chars += '\n';
             startOfFilledInSequence = null;
         }
         return chars;
@@ -80,7 +80,7 @@ const Lettercrap = (function() {
             img.onload = () => {
                 const id = render(element, img, null);
                 resolve(id);
-            }
+            };
         });
     }
 
@@ -91,21 +91,22 @@ const Lettercrap = (function() {
             const serialized = serializer.serializeToString(svg);
             image.src = `data:image/svg+xml;base64,${btoa(serialized)}`;
             image.onload = () => {
+                const scale = 10;
                 const canvas = document.createElement('canvas');
                 const context = canvas.getContext('2d');
-                const width = svg.getAttribute("width") * 10;
-                const height = svg.getAttribute("height") * 10;
+                const width = svg.getAttribute('width') * scale;
+                const height = svg.getAttribute('height') * scale;
                 canvas.width = width;
                 canvas.height = height;
                 context.drawImage(image, 0, 0, width, height);
                 resolve(canvas.toDataURL());
-            }
+            };
         });
     }
 
     async function createSVG(content = 'LETTERCRAP', font_family = 'monospace', font_weight = 'normal') {
         return new Promise(resolve => {
-            const namespace = "http://www.w3.org/2000/svg";
+            const namespace = 'http://www.w3.org/2000/svg';
             const svg = document.createElementNS(namespace, 'svg');
             const text = document.createElementNS(namespace, 'text');
             text.setAttributeNS(null, 'y', '10');
