@@ -1,4 +1,5 @@
-(function() {
+const Lettercrap = (function() {
+
     const charWidth = 6;
     const charHeight = 10;
     const updateInterval = 150;
@@ -68,7 +69,7 @@
             width: element.clientWidth,
             height: element.clientHeight,
         });
-        setTimeout(callback, updateInterval);
+        return setTimeout(callback, updateInterval);
     }
 
     async function initElement(element) {
@@ -77,8 +78,8 @@
             img.crossOrigin = 'anonymous';
             img.src = element.getAttribute('data-lettercrap');
             img.onload = () => {
-                render(element, img, null);
-                resolve();
+                const id = render(element, img, null);
+                resolve(id);
             }
         });
     }
@@ -139,5 +140,5 @@
         document.querySelectorAll('[data-lettercrap-text]').forEach(initTextElement);
     }
 
-    document.addEventListener('DOMContentLoaded', init);
-})()
+    return { initElement, initTextElement, init };
+})();
