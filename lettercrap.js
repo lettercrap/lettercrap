@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 const Lettercrap = (function() {
 
     const charWidth = 6;
