@@ -19,7 +19,7 @@ You can define the data holders (and subsequent rendering sections) in your HTML
     ```html
     <div data-lettercrap='assets/lettercrap.png'></div>
     ```
-   
+
 2. Create a `<div>` with the `data-lettercrap-text` attribute and set
    the value to the text you want to generate the ASCII art from.
 
@@ -39,7 +39,7 @@ Depending on the method you choose, you can initialize the elements in a script 
       Lettercrap.initElement(element);
     </script>
     ```
-   
+
 2. If you're using text, you initialize a specific element by
    passing its `Node` to the `initTextElement` method of `Lettercrap`.
 
@@ -109,7 +109,7 @@ Check out the `index.html` file to see how this all fits together.
 
 ## Development
 
-To get the example working locally, you can run: 
+To get the example working locally, you can run:
 
 ```bash
 npm run dev
