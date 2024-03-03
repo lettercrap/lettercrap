@@ -1,9 +1,15 @@
 // eslint-disable-next-line no-unused-vars
 const Lettercrap = (function() {
 
+    const default_content = 'LETTERCRAP';
+    const default_font_family = 'monospace';
+    const default_font_weight = 'normal';
+    const default_svg_namespace = 'http://www.w3.org/2000/svg';
     const default_char_width = 6;
     const default_char_height = 10;
     const default_update_interval = 150;
+    const default_replace_word_probability = 0.05;
+    const default_replace_existing_text_probability = 0.1;
 
     return { initElement, initTextElement, init };
 
@@ -29,11 +35,14 @@ const Lettercrap = (function() {
         return element;
     }
 
-    async function createSVG(content = 'LETTERCRAP', font_family = 'monospace', font_weight = 'normal') {
+    async function createSVG(
+        content = default_content,
+        font_family = default_font_family,
+        font_weight = default_font_weight
+    ) {
         return new Promise(resolve => {
-            const namespace = 'http://www.w3.org/2000/svg';
-            const svg = document.createElementNS(namespace, 'svg');
-            const text = document.createElementNS(namespace, 'text');
+            const svg = document.createElementNS(default_svg_namespace, 'svg');
+            const text = document.createElementNS(default_svg_namespace, 'text');
             text.setAttributeNS(null, 'y', '10');
             text.setAttributeNS(null, 'font-family', font_family);
             text.setAttributeNS(null, 'font-weight', font_weight);
@@ -108,8 +117,10 @@ const Lettercrap = (function() {
     function getTextContentWithImageAtSize(image, width, height, existingText, words, letters) {
         existingText = existingText?.replace(/\r?\n|\r/g, '') || null;
         const randomChoice = list => list[Math.floor(Math.random() * list.length)];
-        const shouldReplaceWord = () => Math.random() < 0.05;
-        const shouldReplaceExistingText = () => !existingText || Math.random() < 0.1;
+        const shouldReplaceWord = () => Math.random() < default_replace_word_probability;
+        const shouldReplaceExistingText = () => {
+            return !existingText || Math.random() < default_replace_existing_text_probability;
+        }
 
         const canvas = document.createElement('canvas');
         canvas.width = width / default_char_width;
