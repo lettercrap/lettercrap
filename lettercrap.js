@@ -101,7 +101,10 @@ const Lettercrap = (function() {
         ) {
             const svg = document.createElementNS(default_svg_namespace, 'svg');
             const text = document.createElementNS(default_svg_namespace, 'text');
-            text.setAttributeNS(null, 'y', '10');
+            text.setAttributeNS(null, 'x', '50%');
+            text.setAttributeNS(null, 'y', '50%');
+            text.setAttributeNS(null, 'text-anchor', 'middle');
+            text.setAttributeNS(null, 'dominant-baseline', 'central');
             text.setAttributeNS(null, 'font-family', font_family);
             text.setAttributeNS(null, 'font-weight', font_weight);
             text.textContent = content;
