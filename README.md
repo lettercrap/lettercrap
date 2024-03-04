@@ -129,14 +129,7 @@ we provide further means for customizing the output on a per-element basis:
     <div data-lettercrap-text='LETTERCRAP' data-lettercrap-font-weight='bold'></div>
     ```
 
-_Lettercrap_ allows you to generate a canvas from text if you don't want to generate an image beforehand
-with the `data-lettercrap-text` attribute:
-
-```html
-<div data-lettercrap-text='CHECK IT OUT' data-lettercrap-aspect-ratio='0.3'></div>
-```
-
-Check out the `index.html` file to see how this all fits together.
+Check out the [example](index.html) to see how this all fits together.
 
 ## Development
 
