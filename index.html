@@ -17,6 +17,24 @@
         <hr />
         <h1>Text-based rendering:</h1>
         <div id="text-div" data-lettercrap-text="LETTERCRAP"></div>
+        <hr />
+        <h1>API:</h1>
+        <p>
+            You can try the API in the console for yourself.
+            Here's some examples of how to interact with it:
+        </p>
+        <pre>
+            <code>
+const divs = document.querySelectorAll('div');
+const [ image, text ] = divs;
+Lettercrap.resetElement(image); // reset a single element
+Lettercrap.initElement(image);  // initialize a single element
+Lettercrap.resetElements(divs); // reset multiple elements
+Lettercrap.initElements(divs);  // initialize multiple elements
+Lettercrap.reset();             // reset initialized elements
+Lettercrap.init();              // initialize elements
+            </code>
+        </pre>
     </body>
     <script src="lettercrap.js"></script>
     <script>
