@@ -185,7 +185,7 @@ const Lettercrap = (function() {
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
         const data = context.getImageData(0, 0, canvas.width, canvas.height);
         let chars = '';
-        let startOfFilledInSequence = 0;
+        let start_of_filled_in_sequence = 0;
         let i = 0;
 
         for (const _y of Array(data.height).keys()) {
@@ -193,22 +193,22 @@ const Lettercrap = (function() {
                 const black = data.data[i * 4] < 120;
                 const transparent = data.data[i * 4 + 3] < 50;
                 if (black && !transparent) {
-                    if (startOfFilledInSequence === null) startOfFilledInSequence = i;
+                    if (start_of_filled_in_sequence === null) start_of_filled_in_sequence = i;
                     chars += shouldReplaceExistingText() ? randomChoice(letters) : existingText[i];
                     if (words.length > 0 && shouldReplaceWord() && shouldReplaceExistingText()) {
                         const word = randomChoice(words);
-                        if (i + 1 - startOfFilledInSequence >= word.length) {
+                        if (i + 1 - start_of_filled_in_sequence >= word.length) {
                             chars = chars.substring(0, chars.length - word.length) + word;
                         }
                     }
                 } else {
                     chars += ' ';
-                    startOfFilledInSequence = null;
+                    start_of_filled_in_sequence = null;
                 }
                 i++;
             }
             chars += '\n';
-            startOfFilledInSequence = null;
+            start_of_filled_in_sequence = null;
         }
         return chars;
     }
