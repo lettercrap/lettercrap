@@ -48,7 +48,7 @@ For initializing elements on the page, you can use one of three methods:
       Lettercrap.initElements(elements);
     </script>
     ```
-   
+
 3. Initialize all elements on the page by calling the `init` method of `Lettercrap`:
 
     ```html
