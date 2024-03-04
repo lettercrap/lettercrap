@@ -112,8 +112,10 @@ const Lettercrap = (function() {
             document.body.appendChild(svg);
             const bounding_box = text.getBBox();
             document.body.removeChild(svg);
-            svg.setAttributeNS(null, 'height', bounding_box.height.toString());
-            svg.setAttributeNS(null, 'width', bounding_box.width.toString());
+            const height = Math.round(bounding_box.height);
+            const width = Math.round(bounding_box.width);
+            svg.setAttributeNS(null, 'height', height.toString());
+            svg.setAttributeNS(null, 'width', width.toString());
             return svg;
         }
     }
