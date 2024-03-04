@@ -27,10 +27,9 @@ You can define the data holders (and subsequent rendering sections) in your HTML
     <div data-lettercrap-text='LETTERCRAP'></div>
     ```
 
-Depending on the method you choose, you can initialize the elements in a script tag in one of two ways:
+For initializing elements on the page, you can use one of three methods:
 
-1. If you're using an image, you initialize a specific element by
-   passing its `Node` to the `initElement` method of `Lettercrap`.
+1. Initialize a single element by passing its `Node` to the `initElement` method of `Lettercrap`:
 
     ```html
     <script src="lettercrap.js"></script>
@@ -40,25 +39,24 @@ Depending on the method you choose, you can initialize the elements in a script 
     </script>
     ```
 
-2. If you're using text, you initialize a specific element by
-   passing its `Node` to the `initTextElement` method of `Lettercrap`.
+2. Initialize multiple elements by passing a `NodeList` to the `initElements` method of `Lettercrap`:
 
     ```html
     <script src="lettercrap.js"></script>
     <script>
-      const element = document.getElementById('...');
-      Lettercrap.initTextElement(element);
+      const elements = document.querySelectorAll('...');
+      Lettercrap.initElements(elements);
     </script>
     ```
+   
+3. Initialize all elements on the page by calling the `init` method of `Lettercrap`:
 
-However, if you are initializing all elements on the page, you can just use the `init` method:
-
-```html
-<script src="lettercrap.js"></script>
-<script>
-  Lettercrap.init();
-</script>
-```
+    ```html
+    <script src="lettercrap.js"></script>
+    <script>
+      Lettercrap.init();
+    </script>
+    ```
 
 For resetting initialized elements, you can use one of three methods:
 

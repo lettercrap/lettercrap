@@ -28,7 +28,7 @@ const Lettercrap = (function() {
     const default_replace_word_probability = 0.05;
     const default_replace_existing_text_probability = 0.1;
 
-    return { resetElement, resetElements, reset, init, initTextElement, initElement };
+    return { resetElement, resetElements, reset, init, initElements, initElement };
 
     async function resetElement(element) {
         return new Promise((resolve, reject) => {
@@ -60,33 +60,45 @@ const Lettercrap = (function() {
     }
 
     async function init() {
-        document.querySelectorAll('[data-lettercrap]').forEach(initElement);
-        document.querySelectorAll('[data-lettercrap-text]').forEach(initTextElement);
+        const elements = document.querySelectorAll('[data-lettercrap], [data-lettercrap-text]');
+        return initElements(elements);
     }
 
-    async function initTextElement(element) {
-        convertTextToImageElement(element).then(initElement);
+    async function initElements(elements) {
+        return Promise.all(
+            Array.from(elements).map(initElement)
+        );
     }
 
-    async function convertTextToImageElement(element) {
-        const text = element.getAttribute('data-lettercrap-text') || undefined;
-        const font_family = element.getAttribute('data-lettercrap-font-family') || undefined;
-        const font_weight = element.getAttribute('data-lettercrap-font-weight') || undefined;
-        const svg = await createSVG(text, font_family, font_weight);
-        const data = await getImageData(svg);
-        element.setAttribute('data-lettercrap', data.toString());
-        element.removeAttribute('data-lettercrap-text');
-        element.removeAttribute('data-lettercrap-font-family');
-        element.removeAttribute('data-lettercrap-font-weight');
-        return element;
-    }
+    async function initElement(element) {
+        if (instances.has(element)) return;
 
-    async function createSVG(
-        content = default_content,
-        font_family = default_font_family,
-        font_weight = default_font_weight
-    ) {
-        return new Promise(resolve => {
+        if (element.hasAttribute('data-lettercrap-text')) {
+            const text = element.getAttribute('data-lettercrap-text') || undefined;
+            const font_family = element.getAttribute('data-lettercrap-font-family') || undefined;
+            const font_weight = element.getAttribute('data-lettercrap-font-weight') || undefined;
+            const svg = createSVG(text, font_family, font_weight);
+            const data = await getImageData(svg);
+            element.setAttribute('data-lettercrap', data.toString());
+        }
+
+        return new Promise((resolve, reject) => {
+            const image = new Image();
+            image.crossOrigin = 'anonymous';
+            image.src = element.getAttribute('data-lettercrap');
+            image.onerror = reject;
+            image.onload = () => {
+                const metadata = render(element, image);
+                instances.set(element, metadata);
+                resolve();
+            };
+        });
+
+        function createSVG(
+            content = default_content,
+            font_family = default_font_family,
+            font_weight = default_font_weight
+        ) {
             const svg = document.createElementNS(default_svg_namespace, 'svg');
             const text = document.createElementNS(default_svg_namespace, 'text');
             text.setAttributeNS(null, 'y', '10');
@@ -99,16 +111,17 @@ const Lettercrap = (function() {
             document.body.removeChild(svg);
             svg.setAttributeNS(null, 'height', bounding_box.height.toString());
             svg.setAttributeNS(null, 'width', bounding_box.width.toString());
-            return resolve(svg);
-        });
+            return svg;
+        }
     }
 
     async function getImageData(svg) {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             const image = new Image();
             const serializer = new XMLSerializer();
             const serialized = serializer.serializeToString(svg);
             image.src = `data:image/svg+xml;base64,${btoa(serialized)}`;
+            image.onerror = reject;
             image.onload = () => {
                 const scale = 10;
                 const canvas = document.createElement('canvas');
@@ -119,20 +132,6 @@ const Lettercrap = (function() {
                 canvas.height = height;
                 context.drawImage(image, 0, 0, width, height);
                 resolve(canvas.toDataURL());
-            };
-        });
-    }
-
-    async function initElement(element) {
-        if (instances.has(element)) return;
-        return new Promise(resolve => {
-            const img = new Image();
-            img.crossOrigin = 'anonymous';
-            img.src = element.getAttribute('data-lettercrap');
-            img.onload = () => {
-                const metadata = render(element, img);
-                instances.set(element, metadata);
-                resolve();
             };
         });
     }
