@@ -1,21 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 const Lettercrap = (function() {
-
-    const instances = new Map();
-
-    class Metadata {
-        constructor(intervalId, observer) {
-            this.intervalId = intervalId;
-            this.observer = observer;
-        }
-
-        destroy() {
-            clearInterval(this.intervalId);
-            this.observer.disconnect();
-        }
-    }
-
-
+    // defaults
     const default_content = 'LETTERCRAP';
     const default_letters = '01';
     const default_words = [];
@@ -27,7 +12,20 @@ const Lettercrap = (function() {
     const default_update_interval = 150;
     const default_replace_word_probability = 0.05;
     const default_replace_existing_text_probability = 0.1;
+    // initialized instance tracking
+    const instances = new Map();
+    class Metadata {
+        constructor(intervalId, observer) {
+            this.intervalId = intervalId;
+            this.observer = observer;
+        }
 
+        destroy() {
+            clearInterval(this.intervalId);
+            this.observer.disconnect();
+        }
+    }
+    // public API
     return { resetElement, resetElements, reset, init, initElements, initElement };
 
     async function resetElement(element) {
