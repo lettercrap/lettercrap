@@ -71,7 +71,7 @@ For resetting initialized elements, you can use one of three methods:
       Lettercrap.resetElement(element);
     </script>
     ```
-   
+
 2. Reset multiple elements by passing a `NodeList` to the `resetElements` method of `Lettercrap`:
 
     ```html
@@ -81,7 +81,7 @@ For resetting initialized elements, you can use one of three methods:
       Lettercrap.resetElements(elements);
     </script>
     ```
-   
+
 3. Reset all elements on the page by calling the `reset` method of `Lettercrap`:
 
     ```html
