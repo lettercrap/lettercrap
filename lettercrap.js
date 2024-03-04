@@ -1,6 +1,21 @@
 // eslint-disable-next-line no-unused-vars
 const Lettercrap = (function() {
 
+    const instances = new Map();
+
+    class Metadata {
+        constructor(intervalId, observer) {
+            this.intervalId = intervalId;
+            this.observer = observer;
+        }
+
+        destroy() {
+            clearInterval(this.intervalId);
+            this.observer.disconnect();
+        }
+    }
+
+
     const default_content = 'LETTERCRAP';
     const default_letters = '01';
     const default_words = [];
@@ -13,7 +28,36 @@ const Lettercrap = (function() {
     const default_replace_word_probability = 0.05;
     const default_replace_existing_text_probability = 0.1;
 
-    return { initElement, initTextElement, init };
+    return { resetElement, resetElements, reset, init, initTextElement, initElement };
+
+    async function resetElement(element) {
+        return new Promise((resolve, reject) => {
+            const metadata = instances.get(element);
+            if (element instanceof Node && !!metadata) {
+                metadata.destroy();
+                instances.delete(element);
+                element.textContent = null;
+                element.style.height = null;
+                resolve();
+            } else if (!metadata) {
+                const error = new Error('Element not initialized');
+                reject(error);
+            } else {
+                const error = new Error('Input is not a Node instance');
+                reject(error);
+            }
+        });
+    }
+
+    async function resetElements(elements) {
+        return Promise.all(
+            Array.from(elements).map(resetElement)
+        );
+    }
+
+    async function reset() {
+        return resetElements(instances.keys());
+    }
 
     async function init() {
         document.querySelectorAll('[data-lettercrap]').forEach(initElement);
@@ -80,36 +124,46 @@ const Lettercrap = (function() {
     }
 
     async function initElement(element) {
+        if (instances.has(element)) return;
         return new Promise(resolve => {
             const img = new Image();
             img.crossOrigin = 'anonymous';
             img.src = element.getAttribute('data-lettercrap');
             img.onload = () => {
-                const id = render(element, img);
-                resolve(id);
+                const metadata = render(element, img);
+                instances.set(element, metadata);
+                resolve();
             };
         });
     }
 
-    function render(element, image, prev = null) {
+    function render(element, image, text = undefined) {
         const aspect = element.hasAttribute('data-lettercrap-aspect-ratio')
             ? parseFloat(element.getAttribute('data-lettercrap-aspect-ratio'))
             : image.height / image.width;
-        element.style.height = `${element.clientWidth * aspect}px`;
+        resetText();
 
         const letters = element.getAttribute('data-lettercrap-letters') || default_letters;
         const words = element.getAttribute('data-lettercrap-words')?.split(' ') || default_words;
         const interval = element.getAttribute('data-lettercrap-update-interval') || default_update_interval;
-        const dimensions = { width: element.clientWidth, height: element.clientHeight };
-        const is_base_case = !!prev && prev.width === dimensions.width && prev.height === dimensions.height;
-        const existing_text = is_base_case ? prev.text : null;
-        const text = getTextContentWithImageAtSize(
-            image, dimensions.width, dimensions.height, existing_text, words, letters
-        );
+        const observer = new ResizeObserver(resetText);
+        observer.observe(element);
+        const id = setInterval(write(), interval);
+        return new Metadata(id, observer);
 
-        element.textContent = text;
-        const callback = () => render(element, image, { text, ...dimensions });
-        return setTimeout(callback, interval);
+        function resetText() {
+            text = undefined;
+            const width = element.clientWidth;
+            element.style.height = `${width * aspect}px`;
+        }
+
+        function write() {
+            const width = element.clientWidth;
+            const height = element.clientHeight;
+            text = getTextContentWithImageAtSize(image, width, height, text, words, letters);
+            element.textContent = text;
+            return write;
+        }
     }
 
     function getTextContentWithImageAtSize(image, width, height, existingText, words, letters) {
