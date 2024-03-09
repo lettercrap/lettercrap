@@ -32,8 +32,8 @@ For initializing elements on the page, you can use one of three methods:
 1. Initialize a single element by passing its `Node` to the `initElement` method of `Lettercrap`:
 
     ```html
-    <script src="lettercrap.js"></script>
-    <script>
+    <script type="module">
+      import Lettercrap from './lettercrap.js';
       const element = document.getElementById('...');
       Lettercrap.initElement(element);
     </script>
@@ -42,8 +42,8 @@ For initializing elements on the page, you can use one of three methods:
 2. Initialize multiple elements by passing a `NodeList` to the `initElements` method of `Lettercrap`:
 
     ```html
-    <script src="lettercrap.js"></script>
-    <script>
+    <script type="module">
+      import Lettercrap from './lettercrap.js';
       const elements = document.querySelectorAll('...');
       Lettercrap.initElements(elements);
     </script>
@@ -52,8 +52,8 @@ For initializing elements on the page, you can use one of three methods:
 3. Initialize all elements on the page by calling the `init` method of `Lettercrap`:
 
     ```html
-    <script src="lettercrap.js"></script>
-    <script>
+    <script type="module">
+      import Lettercrap from './lettercrap.js';
       Lettercrap.init();
     </script>
     ```
@@ -63,8 +63,8 @@ For resetting initialized elements, you can use one of three methods:
 1. Reset a single element by passing its `Node` to the `resetElement` method of `Lettercrap`:
 
     ```html
-    <script src="lettercrap.js"></script>
-    <script>
+    <script type="module">
+      import Lettercrap from './lettercrap.js';
       const element = document.getElementById('...');
       Lettercrap.resetElement(element);
     </script>
@@ -73,8 +73,8 @@ For resetting initialized elements, you can use one of three methods:
 2. Reset multiple elements by passing a `NodeList` to the `resetElements` method of `Lettercrap`:
 
     ```html
-    <script src="lettercrap.js"></script>
-    <script>
+    <script type="module">
+      import Lettercrap from './lettercrap.js';
       const elements = document.querySelectorAll('...');
       Lettercrap.resetElements(elements);
     </script>
@@ -83,8 +83,8 @@ For resetting initialized elements, you can use one of three methods:
 3. Reset all elements on the page by calling the `reset` method of `Lettercrap`:
 
     ```html
-    <script src="lettercrap.js"></script>
-    <script>
+    <script type="module">
+      import Lettercrap from './lettercrap.js';
       Lettercrap.reset();
     </script>
     ```
