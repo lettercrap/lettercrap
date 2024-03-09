@@ -6,6 +6,8 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+# Copilot
+/copilot/chatSessions/
 # Plugins
 codeStyleConfig.xml
 git_toolbox_prj.xml
