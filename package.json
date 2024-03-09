@@ -2,8 +2,13 @@
   "name": "lettercrap",
   "version": "1.0.0",
   "description": "Reincarnation of a JavaScript library that generates dynamic ASCII art on the web",
-  "main": "lettercrap.js",
   "style": "lettercrap.css",
+  "main": "lettercrap.js",
+  "type": "module",
+  "exports": {
+    "import": "./lettercrap.js",
+    "require": "./lettercrap.cjs"
+  },
   "scripts": {
     "lint:html": "htmlhint index.html",
     "lint:md": "markdownlint README.md",
