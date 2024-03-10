@@ -6,16 +6,15 @@
   "style": "dist/lettercrap.min.css",
   "type": "module",
   "scripts": {
-    "lint:html": "htmlhint example/index.html",
-    "lint:md": "markdownlint README.md",
-    "lint:js": "eslint src/**/*.js",
-    "lint:css": "stylelint src/**/*.css",
-    "lint": "npm-run-all lint:*",
+    "lint": "eslint .",
+    "format": "prettier . --write",
+    "format:staged": "pretty-quick --staged",
     "dev": "http-server -o example/index.html -s -c-1 -p 8080",
     "build:css": "cleancss src/lettercrap.css --output dist/lettercrap.min.css",
     "build:js": "esbuild src/lettercrap.js --bundle --minify --format=esm --outfile=dist/lettercrap.min.js",
     "build": "npm-run-all --parallel build:*",
-    "prebuild": "rimraf dist"
+    "prebuild": "rimraf dist",
+    "prepare": "husky"
   },
   "author": {
     "name": "Ozren Dabić",
@@ -35,12 +34,12 @@
     "clean-css-cli": "^5.6.3",
     "esbuild": "0.20.1",
     "eslint": "^8.57.0",
-    "htmlhint": "^1.1.4",
+    "eslint-config-prettier": "^9.1.0",
     "http-server": "^14.1.1",
-    "markdownlint-cli": "^0.39.0",
+    "husky": "^9.0.11",
     "npm-run-all": "^4.1.5",
-    "stylelint": "^16.2.1",
-    "stylelint-config-standard": "^36.0.0",
-    "uglify-js": "^3.17.4"
+    "prettier": "^3.2.5",
+    "pretty-quick": "^4.0.0",
+    "rimraf": "^5.0.5"
   }
 }
