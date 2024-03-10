@@ -6,10 +6,10 @@
   "style": "dist/lettercrap.min.css",
   "type": "module",
   "scripts": {
-    "lint:html": "htmlhint index.html",
+    "lint:html": "htmlhint example/index.html",
     "lint:md": "markdownlint README.md",
-    "lint:js": "eslint lettercrap.js",
-    "lint:css": "stylelint lettercrap.css",
+    "lint:js": "eslint src/**/*.js",
+    "lint:css": "stylelint src/**/*.css",
     "lint": "npm-run-all lint:*",
     "dev": "http-server -o example/index.html -s -c-1 -p 8080",
     "build:css": "cleancss src/lettercrap.css --output dist/lettercrap.min.css",
