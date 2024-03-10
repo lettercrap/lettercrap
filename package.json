@@ -25,13 +25,13 @@
     "email": "ozren.dabic@usi.ch",
     "url": "https://dabico.github.io"
   },
-  "homepage": "https://dabico.github.io/lettercrap",
+  "homepage": "https://lettercrap.github.io/lettercrap/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dabico/lettercrap.git"
+    "url": "git+https://github.com/lettercrap/lettercrap.git"
   },
   "bugs": {
-    "url": "https://github.com/dabico/lettercrap/issues"
+    "url": "https://github.com/lettercrap/lettercrap/issues"
   },
   "license": "MIT",
   "devDependencies": {
