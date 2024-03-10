@@ -8,11 +8,13 @@
   "scripts": {
     "lint": "eslint .",
     "format": "prettier . --write",
+    "format:staged": "pretty-quick --staged",
     "dev": "http-server -o example/index.html -s -c-1 -p 8080",
     "build:css": "cleancss src/lettercrap.css --output dist/lettercrap.min.css",
     "build:js": "esbuild src/lettercrap.js --bundle --minify --format=esm --outfile=dist/lettercrap.min.js",
     "build": "npm-run-all --parallel build:*",
-    "prebuild": "rimraf dist"
+    "prebuild": "rimraf dist",
+    "prepare": "husky"
   },
   "author": {
     "name": "Ozren Dabić",
@@ -34,8 +36,10 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "http-server": "^14.1.1",
+    "husky": "^9.0.11",
     "npm-run-all": "^4.1.5",
-    "prettier": "3.2.5",
+    "prettier": "^3.2.5",
+    "pretty-quick": "^4.0.0",
     "rimraf": "^5.0.5"
   }
 }
