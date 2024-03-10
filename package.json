@@ -1,44 +1,39 @@
 {
-    "name": "lettercrap",
-    "version": "1.0.0",
-    "description": "Reincarnation of a JavaScript library that generates dynamic ASCII art on the web",
-    "main": "dist/lettercrap.min.js",
-    "style": "dist/lettercrap.min.css",
-    "type": "module",
-    "scripts": {
-        "lint": "eslint .",
-        "format": "prettier . --write",
-        "dev": "http-server -o example/index.html -s -c-1 -p 8080",
-        "build:css": "cleancss src/lettercrap.css --output dist/lettercrap.min.css",
-        "build:js": "esbuild src/lettercrap.js --bundle --minify --format=esm --outfile=dist/lettercrap.min.js",
-        "build": "npm-run-all --parallel build:*",
-        "prebuild": "rimraf dist"
-    },
-    "author": {
-        "name": "Ozren Dabić",
-        "email": "ozren.dabic@usi.ch",
-        "url": "https://dabico.github.io"
-    },
-    "homepage": "https://lettercrap.github.io/lettercrap/",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/lettercrap/lettercrap.git"
-    },
-    "bugs": {
-        "url": "https://github.com/lettercrap/lettercrap/issues"
-    },
-    "license": "MIT",
-    "devDependencies": {
-        "clean-css-cli": "^5.6.3",
-        "esbuild": "0.20.1",
-        "eslint": "^8.57.0",
-        "htmlhint": "^1.1.4",
-        "http-server": "^14.1.1",
-        "markdownlint-cli": "^0.39.0",
-        "npm-run-all": "^4.1.5",
-        "prettier": "3.2.5",
-        "stylelint": "^16.2.1",
-        "stylelint-config-standard": "^36.0.0",
-        "uglify-js": "^3.17.4"
-    }
+  "name": "lettercrap",
+  "version": "1.0.0",
+  "description": "Reincarnation of a JavaScript library that generates dynamic ASCII art on the web",
+  "main": "dist/lettercrap.min.js",
+  "style": "dist/lettercrap.min.css",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "format": "prettier . --write",
+    "dev": "http-server -o example/index.html -s -c-1 -p 8080",
+    "build:css": "cleancss src/lettercrap.css --output dist/lettercrap.min.css",
+    "build:js": "esbuild src/lettercrap.js --bundle --minify --format=esm --outfile=dist/lettercrap.min.js",
+    "build": "npm-run-all --parallel build:*",
+    "prebuild": "rimraf dist"
+  },
+  "author": {
+    "name": "Ozren Dabić",
+    "email": "ozren.dabic@usi.ch",
+    "url": "https://dabico.github.io"
+  },
+  "homepage": "https://lettercrap.github.io/lettercrap/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lettercrap/lettercrap.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lettercrap/lettercrap/issues"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "clean-css-cli": "^5.6.3",
+    "esbuild": "0.20.1",
+    "eslint": "^8.57.0",
+    "http-server": "^14.1.1",
+    "npm-run-all": "^4.1.5",
+    "prettier": "3.2.5"
+  }
 }
