@@ -1,19 +1,19 @@
 const default_content = 'LETTERCRAP';
 const default_letters = '01';
-const default_words = [];
+const default_words: string[] = [];
 const default_font_family = 'monospace';
 const default_font_weight = 'normal';
 const default_svg_namespace = 'http://www.w3.org/2000/svg';
-const default_char_width = 6;
-const default_char_height = 10;
-const default_update_interval = 150;
-const default_replace_word_probability = 0.05;
-const default_replace_existing_text_probability = 0.1;
+const default_char_width: number = 6;
+const default_char_height: number = 10;
+const default_update_interval: number = 150;
+const default_replace_word_probability: number = 0.05;
+const default_replace_existing_text_probability: number = 0.1;
 
-const instances = new Map();
+const instances = new Map<HTMLDivElement, InitializedInstance>();
 
-class Metadata {
-  constructor(intervalId, observer) {
+class InitializedInstance {
+  constructor(intervalId: number, observer: ResizeObserver) {
     this.intervalId = intervalId;
     this.observer = observer;
   }
@@ -33,14 +33,14 @@ export default {
   initElement,
 };
 
-async function resetElement(element) {
-  return new Promise((resolve, reject) => {
+async function resetElement(element: HTMLDivElement) {
+  return new Promise<void>((resolve, reject) => {
     const metadata = instances.get(element);
     if (element instanceof Node && !!metadata) {
       metadata.destroy();
       instances.delete(element);
       element.textContent = null;
-      element.style.height = null;
+      element.style.height = '';
       resolve();
     } else if (!metadata) {
       const error = new Error('Element not initialized');
@@ -52,7 +52,7 @@ async function resetElement(element) {
   });
 }
 
-async function resetElements(elements) {
+async function resetElements(elements: HTMLDivElement[]) {
   return Promise.all(Array.from(elements).map(resetElement));
 }
 
@@ -65,11 +65,11 @@ async function init() {
   return initElements(elements);
 }
 
-async function initElements(elements) {
+async function initElements(elements: HTMLDivElement[]) {
   return Promise.all(Array.from(elements).map(initElement));
 }
 
-async function initElement(element) {
+async function initElement(element: HTMLDivElement) {
   if (instances.has(element)) return;
 
   if (element.hasAttribute('data-lettercrap-text')) {
@@ -115,8 +115,8 @@ async function initElement(element) {
   }
 }
 
-async function getImageData(svg) {
-  return new Promise((resolve, reject) => {
+async function getImageData(svg: SVGElement) {
+  return new Promise<string>((resolve, reject) => {
     const image = new Image();
     const serializer = new XMLSerializer();
     const serialized = serializer.serializeToString(svg);
@@ -125,9 +125,13 @@ async function getImageData(svg) {
     image.onload = () => {
       const scale = 10;
       const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d');
-      const width = svg.getAttribute('width') * scale;
-      const height = svg.getAttribute('height') * scale;
+      const context = canvas.getContext('2d')!;
+      const widthAttr = svg.getAttribute('width');
+      if (widthAttr === null) throw new Error('Invalid image width');
+      const width = Number(widthAttr) * scale;
+      const heightAttr = svg.getAttribute('height');
+      if (heightAttr === null) throw new Error('Invalid image height');
+      const height = Number(heightAttr) * scale;
       canvas.width = width;
       canvas.height = height;
       context.drawImage(image, 0, 0, width, height);
@@ -136,19 +140,21 @@ async function getImageData(svg) {
   });
 }
 
-function render(element, image, text = undefined) {
-  const aspect = element.hasAttribute('data-lettercrap-aspect-ratio')
-    ? parseFloat(element.getAttribute('data-lettercrap-aspect-ratio'))
-    : image.height / image.width;
+function render(element: HTMLDivElement, image: HTMLImageElement) {
+  let text: string | undefined = undefined;
+  const aspectAttr = parseFloat(element.getAttribute('data-lettercrap-aspect-ratio') ?? '0');
+  const aspect = aspectAttr || image.height / image.width;
   resetText();
 
-  const letters = element.getAttribute('data-lettercrap-letters') || default_letters;
-  const words = element.getAttribute('data-lettercrap-words')?.split(' ') || default_words;
-  const interval = element.getAttribute('data-lettercrap-update-interval') || default_update_interval;
+  const letters = element.getAttribute('data-lettercrap-letters') ?? default_letters;
+  const words = element.getAttribute('data-lettercrap-words')?.split(' ') ?? default_words;
+  const interval = parseInt(
+    element.getAttribute('data-lettercrap-update-interval') ?? default_update_interval.toString()
+  );
   const observer = new ResizeObserver(resetText);
   observer.observe(element);
   const id = setInterval(write(), interval);
-  return new Metadata(id, observer);
+  return new InitializedInstance(id, observer);
 
   function resetText() {
     text = undefined;
@@ -165,18 +171,28 @@ function render(element, image, text = undefined) {
   }
 }
 
-function getTextContentWithImageAtSize(image, width, height, existingText, words, letters) {
-  existingText = existingText?.replace(/\r?\n|\r/g, '') || null;
-  const randomChoice = (list) => list[Math.floor(Math.random() * list.length)];
+function getTextContentWithImageAtSize(
+  image: HTMLImageElement,
+  width: number,
+  height: number,
+  existingText: string | undefined,
+  words: string[],
+  letters: string
+) {
+  existingText = existingText?.replace(/\r?\n|\r/g, '');
   const shouldReplaceWord = () => Math.random() < default_replace_word_probability;
   const shouldReplaceExistingText = () => {
     return !existingText || Math.random() < default_replace_existing_text_probability;
   };
 
+  function randomChoice<T>(list: T[]) {
+    return list[Math.floor(Math.random() * list.length)];
+  }
+
   const canvas = document.createElement('canvas');
   canvas.width = width / default_char_width;
   canvas.height = height / default_char_height;
-  const context = canvas.getContext('2d');
+  const context = canvas.getContext('2d')!;
   context.drawImage(image, 0, 0, canvas.width, canvas.height);
   const data = context.getImageData(0, 0, canvas.width, canvas.height);
   let chars = '';
@@ -189,7 +205,7 @@ function getTextContentWithImageAtSize(image, width, height, existingText, words
       const transparent = data.data[i * 4 + 3] < 50;
       if (black && !transparent) {
         if (start_of_filled_in_sequence === null) start_of_filled_in_sequence = i;
-        chars += shouldReplaceExistingText() ? randomChoice(letters) : existingText[i];
+        chars += shouldReplaceExistingText() ? randomChoice(letters.split('')) : existingText[i];
         if (words.length > 0 && shouldReplaceWord() && shouldReplaceExistingText()) {
           const word = randomChoice(words);
           if (i + 1 - start_of_filled_in_sequence >= word.length) {
