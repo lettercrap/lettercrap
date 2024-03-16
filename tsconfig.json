@@ -11,9 +11,14 @@
     "noUncheckedIndexedAccess": true,
     "moduleResolution": "NodeNext",
     "module": "NodeNext",
+    "allowImportingTsExtensions": true,
     "outDir": "dist",
     "sourceMap": true,
     "declaration": true,
+    "declarationDir": "dist/types",
+    "emitDeclarationOnly": true,
+    "noEmitOnError": true,
     "lib": ["es2022", "dom", "dom.iterable"]
-  }
+  },
+  "include": ["./src"]
 }

@@ -1,14 +1,42 @@
-const default_content = 'LETTERCRAP';
-const default_letters = '01';
-const default_words: string[] = [];
-const default_font_family = 'monospace';
-const default_font_weight = 'normal';
-const default_svg_namespace = 'http://www.w3.org/2000/svg';
-const default_char_width: number = 6;
-const default_char_height: number = 10;
-const default_update_interval: number = 150;
-const default_replace_word_probability: number = 0.05;
-const default_replace_existing_text_probability: number = 0.1;
+type Config = {
+  content: string;
+  letters: string;
+  words: string[];
+  font_family: string;
+  font_weight: string;
+  char_width: number;
+  char_height: number;
+  update_interval: number;
+  replace_word_probability: number;
+  replace_existing_text_probability: number;
+};
+
+const config: Config = {
+  content: 'LETTERCRAP',
+  letters: '01',
+  words: [],
+  font_family: 'monospace',
+  font_weight: 'normal',
+  char_width: 6,
+  char_height: 10,
+  update_interval: 150,
+  replace_word_probability: 0.05,
+  replace_existing_text_probability: 0.1,
+};
+
+export function configure(userConfig: Partial<Config>) {
+  config.content = userConfig.content ?? config.content;
+  config.letters = userConfig.letters ?? config.letters;
+  config.words = userConfig.words ?? config.words;
+  config.font_family = userConfig.font_family ?? config.font_family;
+  config.font_weight = userConfig.font_weight ?? config.font_weight;
+  config.char_width = userConfig.char_width ?? config.char_width;
+  config.char_height = userConfig.char_height ?? config.char_height;
+  config.update_interval = userConfig.update_interval ?? config.update_interval;
+  config.replace_word_probability = userConfig.replace_word_probability ?? config.replace_word_probability;
+  config.replace_existing_text_probability =
+    userConfig.replace_existing_text_probability ?? config.replace_existing_text_probability;
+}
 
 const instances = new Map<HTMLDivElement, InitializedInstance>();
 
@@ -27,16 +55,7 @@ class InitializedInstance {
   }
 }
 
-export default {
-  resetElement,
-  resetElements,
-  reset,
-  init,
-  initElements,
-  initElement,
-};
-
-async function resetElement(element: HTMLDivElement) {
+export async function resetElement(element: HTMLDivElement) {
   return new Promise<void>((resolve, reject) => {
     const metadata = instances.get(element);
     if (element instanceof Node && !!metadata) {
@@ -55,24 +74,24 @@ async function resetElement(element: HTMLDivElement) {
   });
 }
 
-async function resetElements(elements: HTMLDivElement[]) {
+export async function resetElements(elements: HTMLDivElement[]) {
   return Promise.all(Array.from(elements).map(resetElement));
 }
 
-async function reset() {
+export async function reset() {
   return resetElements(Array.from(instances.keys()));
 }
 
-async function init() {
+export async function init() {
   const elements = document.querySelectorAll<HTMLDivElement>('div[data-lettercrap], div[data-lettercrap-text]');
   return initElements(Array.from(elements));
 }
 
-async function initElements(elements: HTMLDivElement[]) {
+export async function initElements(elements: HTMLDivElement[]) {
   return Promise.all(Array.from(elements).map(initElement));
 }
 
-async function initElement(element: HTMLDivElement) {
+export async function initElement(element: HTMLDivElement) {
   if (instances.has(element)) return;
 
   if (element.hasAttribute('data-lettercrap-text')) {
@@ -98,9 +117,9 @@ async function initElement(element: HTMLDivElement) {
     };
   });
 
-  function createSVG(content = default_content, font_family = default_font_family, font_weight = default_font_weight) {
-    const svg = document.createElementNS(default_svg_namespace, 'svg');
-    const text = document.createElementNS(default_svg_namespace, 'text');
+  function createSVG(content = config.content, font_family = config.font_family, font_weight = config.font_weight) {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     text.setAttributeNS(null, 'x', '50%');
     text.setAttributeNS(null, 'y', '50%');
     text.setAttributeNS(null, 'text-anchor', 'middle');
@@ -151,10 +170,10 @@ function render(element: HTMLDivElement, image: HTMLImageElement) {
   const aspect = aspectAttr || image.height / image.width;
   resetText();
 
-  const letters = element.getAttribute('data-lettercrap-letters') ?? default_letters;
-  const words = element.getAttribute('data-lettercrap-words')?.split(' ') ?? default_words;
+  const letters = element.getAttribute('data-lettercrap-letters') ?? config.letters;
+  const words = element.getAttribute('data-lettercrap-words')?.split(' ') ?? config.words;
   const interval = parseInt(
-    element.getAttribute('data-lettercrap-update-interval') ?? default_update_interval.toString()
+    element.getAttribute('data-lettercrap-update-interval') ?? config.update_interval.toString()
   );
   const observer = new ResizeObserver(resetText);
   observer.observe(element);
@@ -185,9 +204,9 @@ function getTextContentWithImageAtSize(
   letters: string
 ) {
   existingText = existingText?.replace(/\r?\n|\r/g, '');
-  const shouldReplaceWord = () => Math.random() < default_replace_word_probability;
+  const shouldReplaceWord = () => Math.random() < config.replace_word_probability;
   const shouldReplaceExistingText = () => {
-    return !existingText || Math.random() < default_replace_existing_text_probability;
+    return !existingText || Math.random() < config.replace_existing_text_probability;
   };
 
   function randomChoice<T>(list: T[]) {
@@ -195,8 +214,8 @@ function getTextContentWithImageAtSize(
   }
 
   const canvas = document.createElement('canvas');
-  canvas.width = width / default_char_width;
-  canvas.height = height / default_char_height;
+  canvas.width = width / config.char_width;
+  canvas.height = height / config.char_height;
   const context = canvas.getContext('2d')!;
   context.drawImage(image, 0, 0, canvas.width, canvas.height);
   const data = context.getImageData(0, 0, canvas.width, canvas.height);
