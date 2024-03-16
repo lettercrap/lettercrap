@@ -13,6 +13,9 @@ const default_replace_existing_text_probability: number = 0.1;
 const instances = new Map<HTMLDivElement, InitializedInstance>();
 
 class InitializedInstance {
+  intervalId: number;
+  observer: ResizeObserver;
+
   constructor(intervalId: number, observer: ResizeObserver) {
     this.intervalId = intervalId;
     this.observer = observer;
@@ -57,12 +60,12 @@ async function resetElements(elements: HTMLDivElement[]) {
 }
 
 async function reset() {
-  return resetElements(instances.keys());
+  return resetElements(Array.from(instances.keys()));
 }
 
 async function init() {
-  const elements = document.querySelectorAll('[data-lettercrap], [data-lettercrap-text]');
-  return initElements(elements);
+  const elements = document.querySelectorAll<HTMLDivElement>('div[data-lettercrap], div[data-lettercrap-text]');
+  return initElements(Array.from(elements));
 }
 
 async function initElements(elements: HTMLDivElement[]) {
@@ -73,18 +76,20 @@ async function initElement(element: HTMLDivElement) {
   if (instances.has(element)) return;
 
   if (element.hasAttribute('data-lettercrap-text')) {
-    const text = element.getAttribute('data-lettercrap-text') || undefined;
-    const font_family = element.getAttribute('data-lettercrap-font-family') || undefined;
-    const font_weight = element.getAttribute('data-lettercrap-font-weight') || undefined;
+    const text = element.getAttribute('data-lettercrap-text') ?? undefined;
+    const font_family = element.getAttribute('data-lettercrap-font-family') ?? undefined;
+    const font_weight = element.getAttribute('data-lettercrap-font-weight') ?? undefined;
     const svg = createSVG(text, font_family, font_weight);
     const data = await getImageData(svg);
     element.setAttribute('data-lettercrap', data.toString());
   }
 
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     const image = new Image();
+    const src = element.getAttribute('data-lettercrap');
+    if (!src) throw new Error('No image data provided');
     image.crossOrigin = 'anonymous';
-    image.src = element.getAttribute('data-lettercrap');
+    image.src = src;
     image.onerror = reject;
     image.onload = () => {
       const metadata = render(element, image);
@@ -196,19 +201,23 @@ function getTextContentWithImageAtSize(
   context.drawImage(image, 0, 0, canvas.width, canvas.height);
   const data = context.getImageData(0, 0, canvas.width, canvas.height);
   let chars = '';
-  let start_of_filled_in_sequence = 0;
+  let start_of_filled_in_sequence: number | null = 0;
   let i = 0;
 
   for (const _y of Array(data.height).keys()) {
     for (const _x of Array(data.width).keys()) {
-      const black = data.data[i * 4] < 120;
-      const transparent = data.data[i * 4 + 3] < 50;
+      const [r, g, b, a] = data.data.slice(i * 4, (i + 1) * 4);
+      if (r === undefined || g === undefined || b === undefined || a === undefined) {
+        throw new Error('Array index out of bound');
+      }
+      const black = r < 120;
+      const transparent = a < 50;
       if (black && !transparent) {
         if (start_of_filled_in_sequence === null) start_of_filled_in_sequence = i;
-        chars += shouldReplaceExistingText() ? randomChoice(letters.split('')) : existingText[i];
+        chars += shouldReplaceExistingText() ? randomChoice(letters.split('')) : existingText![i];
         if (words.length > 0 && shouldReplaceWord() && shouldReplaceExistingText()) {
           const word = randomChoice(words);
-          if (i + 1 - start_of_filled_in_sequence >= word.length) {
+          if (word && i + 1 - start_of_filled_in_sequence >= word.length) {
             chars = chars.substring(0, chars.length - word.length) + word;
           }
         }
