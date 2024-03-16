@@ -10,8 +10,7 @@ _Lettercrap_ is a JavaScript library that uses an image mask to generate dynamic
 
 ## Usage
 
-To use the library in your project, include _both_ `lettercrap.js` and `lettercrap.css`.
-The JS file exports a `Lettercrap` object that you can use to generate ASCII art.
+To use the library in your project, include _both_ `lettercrap.min.js` and `lettercrap.min.css`. The JS file exports some functions you can use to generate ASCII art.
 You can define the data holders (and subsequent rendering sections) in your HTML in one of two ways:
 
 1. Create a `<div>` with the `data-lettercrap` attribute and set the value to the source of a black-and-white image.
@@ -33,7 +32,7 @@ For initializing elements on the page, you can use one of three methods:
 
    ```html
    <script type="module">
-     import Lettercrap from './lettercrap.js';
+     import * as Lettercrap from './lettercrap.min.js';
      const element = document.getElementById('...');
      Lettercrap.initElement(element);
    </script>
@@ -43,7 +42,7 @@ For initializing elements on the page, you can use one of three methods:
 
    ```html
    <script type="module">
-     import Lettercrap from './lettercrap.js';
+     import * as Lettercrap from './lettercrap.min.js';
      const elements = document.querySelectorAll('...');
      Lettercrap.initElements(elements);
    </script>
@@ -53,7 +52,7 @@ For initializing elements on the page, you can use one of three methods:
 
    ```html
    <script type="module">
-     import Lettercrap from './lettercrap.js';
+     import * as Lettercrap from './lettercrap.min.js';
      Lettercrap.init();
    </script>
    ```
@@ -64,7 +63,7 @@ For resetting initialized elements, you can use one of three methods:
 
    ```html
    <script type="module">
-     import Lettercrap from './lettercrap.js';
+     import * as Lettercrap from './lettercrap.min.js';
      const element = document.getElementById('...');
      Lettercrap.resetElement(element);
    </script>
@@ -74,7 +73,7 @@ For resetting initialized elements, you can use one of three methods:
 
    ```html
    <script type="module">
-     import Lettercrap from './lettercrap.js';
+     import * as Lettercrap from './lettercrap.min.js';
      const elements = document.querySelectorAll('...');
      Lettercrap.resetElements(elements);
    </script>
@@ -84,7 +83,7 @@ For resetting initialized elements, you can use one of three methods:
 
    ```html
    <script type="module">
-     import Lettercrap from './lettercrap.js';
+     import * as Lettercrap from './lettercrap.min.js';
      Lettercrap.reset();
    </script>
    ```
@@ -127,7 +126,17 @@ we provide further means for customizing the output on a per-element basis:
   <div data-lettercrap-text="LETTERCRAP" data-lettercrap-font-weight="bold"></div>
   ```
 
-Check out the [example](index.html) to see how this all fits together.
+You can also configure how the library behaves by using the exported `configure` function to overwrite the default options:
+
+```html
+<script type="module">
+  import * as Lettercrap from './lettercrap.min.js';
+  Lettercrap.configure({ letters: 'AB' });
+  Lettercrap.init();
+</script>
+```
+
+Check out the [example](example/index.html) to see how this all fits together.
 
 ## Development
 
