@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "format": "prettier . --write",
     "format:staged": "pretty-quick --staged",
+    "predev": "npm run build",
     "dev": "http-server -o example/index.html -s -c-1 -p 8080",
     "build:css": "cleancss src/lettercrap.css --output dist/lettercrap.min.css",
     "build:ts": "esbuild src/index.ts --bundle --minify --format=esm --tsconfig=tsconfig.json --outfile=dist/lettercrap.min.js",
