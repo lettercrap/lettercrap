@@ -11,16 +11,25 @@
     "format:staged": "pretty-quick --staged",
     "dev": "http-server -o example/index.html -s -c-1 -p 8080",
     "build:css": "cleancss src/lettercrap.css --output dist/lettercrap.min.css",
-    "build:js": "esbuild src/lettercrap.js --bundle --minify --format=esm --outfile=dist/lettercrap.min.js",
+    "build:ts": "esbuild src/index.ts --bundle --minify --format=esm --tsconfig=tsconfig.json --outfile=dist/lettercrap.min.js",
+    "build:types": "tsc --emitDeclarationOnly",
     "build": "npm-run-all --parallel build:*",
-    "prebuild": "rimraf dist",
-    "prepare": "husky"
+    "prebuild": "npm run clean",
+    "prepare": "husky",
+    "clean": "rimraf dist"
   },
-  "author": {
-    "name": "Ozren Dabić",
-    "email": "ozren.dabic@usi.ch",
-    "url": "https://dabico.github.io"
-  },
+  "contributors": [
+    {
+      "name": "Ozren Dabić",
+      "email": "dabic.ozren@gmail.com",
+      "url": "https://dabico.github.io"
+    },
+    {
+      "name": "Davide Ciulla",
+      "email": "davide.ciulla@hotmail.com",
+      "url": "https://davideciulla.com"
+    }
+  ],
   "homepage": "https://lettercrap.github.io/lettercrap/",
   "repository": {
     "type": "git",
