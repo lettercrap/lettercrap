@@ -136,6 +136,17 @@ You can also configure how the library behaves by using the exported `configure`
 </script>
 ```
 
+The following table shows the correspondence between the global `Config` properties and the per-instance `data` equivalents:
+
+| Global `Config` property | Per-instance `data` equivalent |
+| ------------------------ | ------------------------------ |
+| `content`                | `data-lettercrap`              |
+| `letters`                | `data-lettercrap-letters`      |
+| `words`                  | `data-lettercrap-words`        |
+| `font_family`            | `data-lettercrap-font-family`  |
+| `font_weight`            | `data-lettercrap-font-weight`  |
+| `update_interval`        | `data-lettercrap-interval`     |
+
 Please note that changes to default options will not propagate to instances that have already been rendered.
 To synchronize the rendered instances that rely on default setting, you can call the `refresh` method:
 
