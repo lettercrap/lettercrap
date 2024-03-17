@@ -12,17 +12,17 @@
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#000000" />
     <title>Lettercrap</title>
-    <link rel="stylesheet" href="../dist/lettercrap.min.css" />
+    <link rel="stylesheet" href="./lettercrap.min.css" />
   </head>
   <body>
     <h1>Image-based rendering:</h1>
-    <div id="image-div" data-lettercrap="../assets/lettercrap.png"></div>
+    <div id="image-div" data-lettercrap="./lettercrap.png"></div>
     <hr />
     <h1>Text-based rendering:</h1>
     <div id="text-div" data-lettercrap-text="LETTERCRAP"></div>
   </body>
   <script type="module">
-    import * as Lettercrap from '../dist/lettercrap.min.js';
+    import * as Lettercrap from './lettercrap.min.js';
     Lettercrap.init();
   </script>
 </html>
