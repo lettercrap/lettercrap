@@ -26,9 +26,9 @@ You can define the data holders (and subsequent rendering sections) in your HTML
    <div data-lettercrap-text="LETTERCRAP"></div>
    ```
 
-For initializing elements on the page, you can use one of three methods:
+For initializing elements on the page, you can use one of three functions:
 
-1. Initialize a single element by passing its `Node` to the `initElement` method of `Lettercrap`:
+1. Initialize a single element by passing its `Node` to the `initElement` function of `Lettercrap`:
 
    ```html
    <script type="module">
@@ -38,7 +38,7 @@ For initializing elements on the page, you can use one of three methods:
    </script>
    ```
 
-2. Initialize multiple elements by passing a `NodeList` to the `initElements` method of `Lettercrap`:
+2. Initialize multiple elements by passing a `NodeList` to the `initElements` function of `Lettercrap`:
 
    ```html
    <script type="module">
@@ -48,7 +48,7 @@ For initializing elements on the page, you can use one of three methods:
    </script>
    ```
 
-3. Initialize all elements on the page by calling the `init` method of `Lettercrap`:
+3. Initialize all elements on the page by calling the `init` function of `Lettercrap`:
 
    ```html
    <script type="module">
@@ -57,9 +57,9 @@ For initializing elements on the page, you can use one of three methods:
    </script>
    ```
 
-For resetting initialized elements, you can use one of three methods:
+For resetting initialized elements, you can use one of three functions:
 
-1. Reset a single element by passing its `Node` to the `resetElement` method of `Lettercrap`:
+1. Reset a single element by passing its `Node` to the `resetElement` function of `Lettercrap`:
 
    ```html
    <script type="module">
@@ -69,7 +69,7 @@ For resetting initialized elements, you can use one of three methods:
    </script>
    ```
 
-2. Reset multiple elements by passing a `NodeList` to the `resetElements` method of `Lettercrap`:
+2. Reset multiple elements by passing a `NodeList` to the `resetElements` function of `Lettercrap`:
 
    ```html
    <script type="module">
@@ -79,7 +79,7 @@ For resetting initialized elements, you can use one of three methods:
    </script>
    ```
 
-3. Reset all elements on the page by calling the `reset` method of `Lettercrap`:
+3. Reset all elements on the page by calling the `reset` function of `Lettercrap`:
 
    ```html
    <script type="module">
