@@ -5,8 +5,6 @@ export type Config = {
   font_family: string;
   font_weight: string;
   update_interval: number;
-  replace_word_probability: number;
-  replace_existing_text_probability: number;
 };
 
 const config: Config = {
@@ -16,8 +14,6 @@ const config: Config = {
   font_family: 'monospace',
   font_weight: 'normal',
   update_interval: 150,
-  replace_word_probability: 0.05,
-  replace_existing_text_probability: 0.1,
 };
 
 export function configure(userConfig: Partial<Config>) {
@@ -27,9 +23,6 @@ export function configure(userConfig: Partial<Config>) {
   config.font_family = userConfig.font_family ?? config.font_family;
   config.font_weight = userConfig.font_weight ?? config.font_weight;
   config.update_interval = userConfig.update_interval ?? config.update_interval;
-  config.replace_word_probability = userConfig.replace_word_probability ?? config.replace_word_probability;
-  config.replace_existing_text_probability =
-    userConfig.replace_existing_text_probability ?? config.replace_existing_text_probability;
 }
 
 const instances = new Map<HTMLDivElement, InitializedInstance>();
@@ -206,10 +199,8 @@ function getTextContentWithImageAtSize(
   existingText = existingText?.replace(/\r?\n|\r/g, '');
   const char_width = 6;
   const char_height = 10;
-  const shouldReplaceWord = () => Math.random() < config.replace_word_probability;
-  const shouldReplaceExistingText = () => {
-    return !existingText || Math.random() < config.replace_existing_text_probability;
-  };
+  const shouldReplaceWord = () => Math.random() < 0.05;
+  const shouldReplaceExistingText = () => !existingText || Math.random() < 0.1;
 
   function randomChoice<T>(list: T[]) {
     return list[Math.floor(Math.random() * list.length)];
