@@ -55,6 +55,12 @@ class InitializedInstance {
   }
 }
 
+export async function refresh() {
+  const elements = Array.from(instances.keys());
+  await resetElements(elements);
+  await initElements(elements);
+}
+
 export async function resetElement(element: HTMLDivElement) {
   return new Promise<void>((resolve, reject) => {
     const metadata = instances.get(element);

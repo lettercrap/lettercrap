@@ -1,5 +1,6 @@
 export {
   configure,
+  refresh,
   resetElement,
   resetElements,
   reset,
