@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "Reincarnation of a JavaScript library that generates dynamic ASCII art on the web",
   "main": "dist/lettercrap.min.js",
+  "types": "dist/types/index.d.ts",
   "style": "dist/lettercrap.min.css",
+  "files": [
+    "dist/"
+  ],
   "type": "module",
   "scripts": {
     "lint": "eslint .",
