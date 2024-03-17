@@ -1,5 +1,5 @@
 {
-  "name": "lettercrap",
+  "name": "@lettercrap/web",
   "version": "1.0.0",
   "description": "Reincarnation of a JavaScript library that generates dynamic ASCII art on the web",
   "main": "dist/lettercrap.min.js",
