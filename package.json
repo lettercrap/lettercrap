@@ -20,6 +20,7 @@
     "build:types": "tsc --emitDeclarationOnly",
     "build": "npm-run-all --parallel build:*",
     "prebuild": "npm run clean",
+    "postbuild": "copyfiles -f dist/lettercrap.min.* example",
     "prepare": "husky",
     "clean": "rimraf dist"
   },
@@ -48,6 +49,7 @@
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "clean-css-cli": "^5.6.3",
+    "copyfiles": "^2.4.1",
     "esbuild": "0.20.1",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
