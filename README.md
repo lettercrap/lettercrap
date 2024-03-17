@@ -148,7 +148,7 @@ The following table shows the correspondence between the global `Config` propert
 | `update_interval`        | `data-lettercrap-interval`     |
 
 Please note that changes to default options will not propagate to instances that have already been rendered.
-To synchronize the rendered instances that rely on default setting, you can call the `refresh` method:
+To synchronize the rendered instances that rely on default settings, you can call the `refresh` function:
 
 ```html
 <script type="module">
