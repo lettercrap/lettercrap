@@ -16,7 +16,7 @@ You can define the data holders (and subsequent rendering sections) in your HTML
 1. Create a `<div>` with the `data-lettercrap` attribute and set the value to the source of a black-and-white image.
 
    ```html
-   <div data-lettercrap="assets/lettercrap.png"></div>
+   <div data-lettercrap="example.png"></div>
    ```
 
 2. Create a `<div>` with the `data-lettercrap-text` attribute and set
@@ -95,21 +95,21 @@ we provide further means for customizing the output on a per-element basis:
   You can change the set of symbols used with the `data-lettercrap-letters` attribute:
 
   ```html
-  <div data-lettercrap="assets/lettercrap.png" data-lettercrap-letters="ABC"></div>
+  <div data-lettercrap="example.png" data-lettercrap-letters="ABC"></div>
   ```
 
 - To throw in the occasional _full word_ into the mix, you can specify a space-delimited string
   of words to choose from using the `data-lettercrap-words` attribute:
 
   ```html
-  <div data-lettercrap="assets/lettercrap.png" data-lettercrap-words="APPLE BANANA CHERRY"></div>
+  <div data-lettercrap="example.png" data-lettercrap-words="APPLE BANANA CHERRY"></div>
   ```
 
 - You can change the time interval in milliseconds between updates to the ASCII art
   with the `data-lettercrap-update-interval` attribute (default is `150`):
 
   ```html
-  <div data-lettercrap="assets/lettercrap.png" data-lettercrap-interval="200"></div>
+  <div data-lettercrap="example.png" data-lettercrap-interval="200"></div>
   ```
 
 - When using `data-lettercrap-text`, you can set the font of the generated
