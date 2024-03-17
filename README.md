@@ -136,6 +136,19 @@ You can also configure how the library behaves by using the exported `configure`
 </script>
 ```
 
+Please note that changes to default options will not propagate to instances that have already been rendered.
+To synchronize the rendered instances that rely on default setting, you can call the `refresh` method:
+
+```html
+<script type="module">
+  import * as Lettercrap from './lettercrap.min.js';
+  Lettercrap.init().then(async () => {
+    Lettercrap.configure({ letters: 'AB' });
+    Lettercrap.refresh();
+  });
+</script>
+```
+
 Check out the [example](example/index.html) to see how this all fits together.
 
 ## Development
