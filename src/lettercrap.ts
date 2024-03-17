@@ -4,8 +4,6 @@ export type Config = {
   words: string[];
   font_family: string;
   font_weight: string;
-  char_width: number;
-  char_height: number;
   update_interval: number;
   replace_word_probability: number;
   replace_existing_text_probability: number;
@@ -17,8 +15,6 @@ const config: Config = {
   words: [],
   font_family: 'monospace',
   font_weight: 'normal',
-  char_width: 6,
-  char_height: 10,
   update_interval: 150,
   replace_word_probability: 0.05,
   replace_existing_text_probability: 0.1,
@@ -30,8 +26,6 @@ export function configure(userConfig: Partial<Config>) {
   config.words = userConfig.words ?? config.words;
   config.font_family = userConfig.font_family ?? config.font_family;
   config.font_weight = userConfig.font_weight ?? config.font_weight;
-  config.char_width = userConfig.char_width ?? config.char_width;
-  config.char_height = userConfig.char_height ?? config.char_height;
   config.update_interval = userConfig.update_interval ?? config.update_interval;
   config.replace_word_probability = userConfig.replace_word_probability ?? config.replace_word_probability;
   config.replace_existing_text_probability =
@@ -210,6 +204,8 @@ function getTextContentWithImageAtSize(
   letters: string
 ) {
   existingText = existingText?.replace(/\r?\n|\r/g, '');
+  const char_width = 6;
+  const char_height = 10;
   const shouldReplaceWord = () => Math.random() < config.replace_word_probability;
   const shouldReplaceExistingText = () => {
     return !existingText || Math.random() < config.replace_existing_text_probability;
@@ -220,8 +216,8 @@ function getTextContentWithImageAtSize(
   }
 
   const canvas = document.createElement('canvas');
-  canvas.width = width / config.char_width;
-  canvas.height = height / config.char_height;
+  canvas.width = width / char_width;
+  canvas.height = height / char_height;
   const context = canvas.getContext('2d')!;
   context.drawImage(image, 0, 0, canvas.width, canvas.height);
   const data = context.getImageData(0, 0, canvas.width, canvas.height);
