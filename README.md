@@ -1,5 +1,7 @@
 # Lettercrap
 
+![npm](https://img.shields.io/npm/v/@lettercrap/web) ![npm](https://img.shields.io/npm/dw/@lettercrap/web) ![GitHub](https://img.shields.io/github/license/lettercrap/lettercrap)
+
 _Lettercrap_ is a JavaScript library that uses an image mask to generate dynamic ASCII art on the web. It looks like this:
 
 <picture>
