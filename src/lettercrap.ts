@@ -7,7 +7,7 @@ export type Config = {
   update_interval: number;
 };
 
-const config: Config = {
+let config: Config = {
   content: 'LETTERCRAP',
   letters: '01',
   words: [],
@@ -17,12 +17,8 @@ const config: Config = {
 };
 
 export function configure(userConfig: Partial<Config>) {
-  config.content = userConfig.content ?? config.content;
-  config.letters = userConfig.letters ?? config.letters;
-  config.words = userConfig.words ?? config.words;
-  config.font_family = userConfig.font_family ?? config.font_family;
-  config.font_weight = userConfig.font_weight ?? config.font_weight;
-  config.update_interval = userConfig.update_interval ?? config.update_interval;
+  const cleanUserConfig = Object.fromEntries(Object.entries(userConfig).filter(([_key, value]) => value !== undefined));
+  config = { ...config, ...cleanUserConfig };
 }
 
 const instances = new Map<HTMLDivElement, InitializedInstance>();
