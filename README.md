@@ -53,7 +53,7 @@ For initializing elements on the page, you can use one of three functions:
 
    ```html
    <script type="module">
-     import * as Lettercrap from './lettercrap.min.js';
+     import * as Lettercrap from 'https://cdn.jsdelivr.net/npm/@lettercrap/web/dist/lettercrap.min.js';
      const element = document.getElementById('...');
      Lettercrap.initElement(element);
    </script>
@@ -63,7 +63,7 @@ For initializing elements on the page, you can use one of three functions:
 
    ```html
    <script type="module">
-     import * as Lettercrap from './lettercrap.min.js';
+     import * as Lettercrap from 'https://cdn.jsdelivr.net/npm/@lettercrap/web/dist/lettercrap.min.js';
      const elements = document.querySelectorAll('...');
      Lettercrap.initElements(elements);
    </script>
@@ -73,7 +73,7 @@ For initializing elements on the page, you can use one of three functions:
 
    ```html
    <script type="module">
-     import * as Lettercrap from './lettercrap.min.js';
+     import * as Lettercrap from 'https://cdn.jsdelivr.net/npm/@lettercrap/web/dist/lettercrap.min.js';
      Lettercrap.init();
    </script>
    ```
@@ -84,7 +84,7 @@ For resetting initialized elements, you can use one of three functions:
 
    ```html
    <script type="module">
-     import * as Lettercrap from './lettercrap.min.js';
+     import * as Lettercrap from 'https://cdn.jsdelivr.net/npm/@lettercrap/web/dist/lettercrap.min.js';
      const element = document.getElementById('...');
      Lettercrap.resetElement(element);
    </script>
@@ -94,7 +94,7 @@ For resetting initialized elements, you can use one of three functions:
 
    ```html
    <script type="module">
-     import * as Lettercrap from './lettercrap.min.js';
+     import * as Lettercrap from 'https://cdn.jsdelivr.net/npm/@lettercrap/web/dist/lettercrap.min.js';
      const elements = document.querySelectorAll('...');
      Lettercrap.resetElements(elements);
    </script>
@@ -104,7 +104,7 @@ For resetting initialized elements, you can use one of three functions:
 
    ```html
    <script type="module">
-     import * as Lettercrap from './lettercrap.min.js';
+     import * as Lettercrap from 'https://cdn.jsdelivr.net/npm/@lettercrap/web/dist/lettercrap.min.js';
      Lettercrap.reset();
    </script>
    ```
@@ -151,7 +151,7 @@ You can also configure how the library behaves by using the exported `configure`
 
 ```html
 <script type="module">
-  import * as Lettercrap from './lettercrap.min.js';
+  import * as Lettercrap from 'https://cdn.jsdelivr.net/npm/@lettercrap/web/dist/lettercrap.min.js';
   Lettercrap.configure({ letters: 'AB' });
   Lettercrap.init();
 </script>
@@ -173,10 +173,10 @@ To synchronize the rendered instances that rely on default settings, you can cal
 
 ```html
 <script type="module">
-  import * as Lettercrap from './lettercrap.min.js';
+  import * as Lettercrap from 'https://cdn.jsdelivr.net/npm/@lettercrap/web/dist/lettercrap.min.js';
   Lettercrap.init().then(async () => {
     Lettercrap.configure({ letters: 'AB' });
-    Lettercrap.refresh();
+    return Lettercrap.refresh();
   });
 </script>
 ```
