@@ -1,4 +1,4 @@
-# Lettercrap &middot; ![npm](https://img.shields.io/npm/v/@lettercrap/web) ![npm](https://img.shields.io/npm/dm/@lettercrap/web) ![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/@lettercrap/web) ![GitHub](https://img.shields.io/github/license/lettercrap/lettercrap)
+# Lettercrap &middot; ![version](https://img.shields.io/npm/v/@lettercrap/web?label=version) ![npm](https://img.shields.io/npm/dm/@lettercrap/web?label=npm) ![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/@lettercrap/web?label=jsDelivr) ![GitHub](https://img.shields.io/github/license/lettercrap/lettercrap?label=license)
 
 _Lettercrap_ is a JavaScript library that uses an image mask to generate dynamic ASCII art on the web. It looks like this:
 
