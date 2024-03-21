@@ -191,8 +191,6 @@ npm run dev
 
 This will start a local HTTP server on port `8080`.
 
----
-
 ## FAQ
 
 ### How can I request a feature or ask a question?
