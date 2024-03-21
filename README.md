@@ -1,4 +1,4 @@
-# Lettercrap
+# Lettercrap &middot; ![version](https://img.shields.io/npm/v/@lettercrap/web?label=version) ![npm](https://img.shields.io/npm/dm/@lettercrap/web?label=npm) ![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/@lettercrap/web?label=jsDelivr) ![GitHub](https://img.shields.io/github/license/lettercrap/lettercrap?label=license)
 
 _Lettercrap_ is a JavaScript library that uses an image mask to generate dynamic ASCII art on the web. It looks like this:
 
@@ -10,7 +10,26 @@ _Lettercrap_ is a JavaScript library that uses an image mask to generate dynamic
 
 ## Usage
 
-To use the library in your project, include _both_ `lettercrap.min.js` and `lettercrap.min.css`. The JS file exports some functions you can use to generate ASCII art.
+To use the library in the browser, include _both_ `lettercrap.min.js` and `lettercrap.min.css` as follows:
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <title />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@lettercrap/web/dist/lettercrap.min.css" />
+  </head>
+  <body>
+    <!-- TARGETED ELEMENTS GO HERE -->
+    <script type="module">
+      import * as Lettercrap from 'https://cdn.jsdelivr.net/npm/@lettercrap/web/dist/lettercrap.min.js';
+      // CODE THAT USES THE LIBRARY GOES HERE
+    </script>
+  </body>
+</html>
+```
+
+The JS file exports some functions you can use to generate ASCII art.
 You can define the data holders (and subsequent rendering sections) in your HTML in one of two ways:
 
 1. Create a `<div>` with the `data-lettercrap` attribute and set the value to the source of a black-and-white image.
@@ -32,7 +51,7 @@ For initializing elements on the page, you can use one of three functions:
 
    ```html
    <script type="module">
-     import * as Lettercrap from './lettercrap.min.js';
+     import * as Lettercrap from 'https://cdn.jsdelivr.net/npm/@lettercrap/web/dist/lettercrap.min.js';
      const element = document.getElementById('...');
      Lettercrap.initElement(element);
    </script>
@@ -42,7 +61,7 @@ For initializing elements on the page, you can use one of three functions:
 
    ```html
    <script type="module">
-     import * as Lettercrap from './lettercrap.min.js';
+     import * as Lettercrap from 'https://cdn.jsdelivr.net/npm/@lettercrap/web/dist/lettercrap.min.js';
      const elements = document.querySelectorAll('...');
      Lettercrap.initElements(elements);
    </script>
@@ -52,7 +71,7 @@ For initializing elements on the page, you can use one of three functions:
 
    ```html
    <script type="module">
-     import * as Lettercrap from './lettercrap.min.js';
+     import * as Lettercrap from 'https://cdn.jsdelivr.net/npm/@lettercrap/web/dist/lettercrap.min.js';
      Lettercrap.init();
    </script>
    ```
@@ -63,7 +82,7 @@ For resetting initialized elements, you can use one of three functions:
 
    ```html
    <script type="module">
-     import * as Lettercrap from './lettercrap.min.js';
+     import * as Lettercrap from 'https://cdn.jsdelivr.net/npm/@lettercrap/web/dist/lettercrap.min.js';
      const element = document.getElementById('...');
      Lettercrap.resetElement(element);
    </script>
@@ -73,7 +92,7 @@ For resetting initialized elements, you can use one of three functions:
 
    ```html
    <script type="module">
-     import * as Lettercrap from './lettercrap.min.js';
+     import * as Lettercrap from 'https://cdn.jsdelivr.net/npm/@lettercrap/web/dist/lettercrap.min.js';
      const elements = document.querySelectorAll('...');
      Lettercrap.resetElements(elements);
    </script>
@@ -83,7 +102,7 @@ For resetting initialized elements, you can use one of three functions:
 
    ```html
    <script type="module">
-     import * as Lettercrap from './lettercrap.min.js';
+     import * as Lettercrap from 'https://cdn.jsdelivr.net/npm/@lettercrap/web/dist/lettercrap.min.js';
      Lettercrap.reset();
    </script>
    ```
@@ -130,7 +149,7 @@ You can also configure how the library behaves by using the exported `configure`
 
 ```html
 <script type="module">
-  import * as Lettercrap from './lettercrap.min.js';
+  import * as Lettercrap from 'https://cdn.jsdelivr.net/npm/@lettercrap/web/dist/lettercrap.min.js';
   Lettercrap.configure({ letters: 'AB' });
   Lettercrap.init();
 </script>
@@ -152,10 +171,10 @@ To synchronize the rendered instances that rely on default settings, you can cal
 
 ```html
 <script type="module">
-  import * as Lettercrap from './lettercrap.min.js';
+  import * as Lettercrap from 'https://cdn.jsdelivr.net/npm/@lettercrap/web/dist/lettercrap.min.js';
   Lettercrap.init().then(async () => {
     Lettercrap.configure({ letters: 'AB' });
-    Lettercrap.refresh();
+    return Lettercrap.refresh();
   });
 </script>
 ```
@@ -171,3 +190,23 @@ npm run dev
 ```
 
 This will start a local HTTP server on port `8080`.
+
+## FAQ
+
+### How can I request a feature or ask a question?
+
+If you have ideas for a feature you would like to see implemented or if you have any questions, we encourage you to
+create a new [discussion](https://github.com/lettercrap/lettercrap/discussions/). By initiating a discussion, you can
+engage with the community and our team, and we'll respond promptly to address your queries or consider your feature
+requests.
+
+### How can I report a bug?
+
+To report any issues or bugs you encounter, please create a [new issue](https://github.com/lettercrap/lettercrap/issues/).
+Providing detailed information about the problem you're facing will help us understand and address it more effectively.
+Rest assured, we are committed to promptly reviewing and responding to the issues you raise, working collaboratively
+to resolve any bugs and improve the overall user experience.
+
+### How do I contribute to the project?
+
+Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
