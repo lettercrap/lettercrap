@@ -7,7 +7,7 @@ export type Config = {
   update_interval: number;
 };
 
-let config: Config = {
+const config: Config = {
   content: 'LETTERCRAP',
   letters: '01',
   words: [],
@@ -17,8 +17,8 @@ let config: Config = {
 };
 
 export function configure(userConfig: Partial<Config>) {
-  const cleanUserConfig = Object.fromEntries(Object.entries(userConfig).filter(([_key, value]) => value !== undefined));
-  config = { ...config, ...cleanUserConfig };
+  const keys = Object.keys(userConfig) as (keyof Config)[];
+  keys.forEach(<T extends keyof Config>(key: T) => (config[key] = userConfig[key] ?? config[key]));
 }
 
 const instances = new Map<HTMLDivElement, InitializedInstance>();
