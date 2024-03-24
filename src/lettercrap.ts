@@ -1,32 +1,13 @@
 import { z } from 'zod';
 
-const NonBlankStringSchema = z.string().refine((val) => val.trim().length > 0);
-const FontWeightSchema = z.union([
-  z.literal('100'),
-  z.literal('200'),
-  z.literal('300'),
-  z.literal('400'),
-  z.literal('500'),
-  z.literal('600'),
-  z.literal('700'),
-  z.literal('800'),
-  z.literal('900'),
-  z.literal('lighter'),
-  z.literal('normal'),
-  z.literal('bold'),
-  z.literal('bolder'),
-]);
-const UpdateIntervalSchema = z.number().nonnegative();
-const WordsSchema = z.array(NonBlankStringSchema);
-const FontFamilySchema = z.string();
-const ConfigSchema = z.object({
-  content: NonBlankStringSchema,
-  letters: NonBlankStringSchema,
-  words: WordsSchema,
-  font_family: FontFamilySchema,
-  font_weight: FontWeightSchema,
-  update_interval: UpdateIntervalSchema,
-});
+import {
+  ConfigSchema,
+  FontFamilySchema,
+  FontWeightSchema,
+  NonBlankStringSchema,
+  UpdateIntervalSchema,
+  WordsSchema,
+} from './schemas.ts';
 
 export type Config = z.infer<typeof ConfigSchema>;
 
