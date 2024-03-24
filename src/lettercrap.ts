@@ -1,11 +1,34 @@
-export type Config = {
-  content: string;
-  letters: string;
-  words: string[];
-  font_family: string;
-  font_weight: string;
-  update_interval: number;
-};
+import { z } from 'zod';
+
+const NonBlankStringSchema = z.string().refine((val) => val.trim().length > 0);
+const FontWeightSchema = z.union([
+  z.literal('100'),
+  z.literal('200'),
+  z.literal('300'),
+  z.literal('400'),
+  z.literal('500'),
+  z.literal('600'),
+  z.literal('700'),
+  z.literal('800'),
+  z.literal('900'),
+  z.literal('lighter'),
+  z.literal('normal'),
+  z.literal('bold'),
+  z.literal('bolder'),
+]);
+const UpdateIntervalSchema = z.number().nonnegative();
+const WordsSchema = z.array(NonBlankStringSchema);
+const FontFamilySchema = z.string();
+const ConfigSchema = z.object({
+  content: NonBlankStringSchema,
+  letters: NonBlankStringSchema,
+  words: WordsSchema,
+  font_family: FontFamilySchema,
+  font_weight: FontWeightSchema,
+  update_interval: UpdateIntervalSchema,
+});
+
+export type Config = z.infer<typeof ConfigSchema>;
 
 const config: Config = {
   content: 'LETTERCRAP',
@@ -17,7 +40,9 @@ const config: Config = {
 };
 
 export function configure(userConfig: Partial<Config>) {
-  const keys = Object.keys(userConfig) as (keyof Config)[];
+  const cleanUserConfig = Object.fromEntries(Object.entries(userConfig).filter(([_key, val]) => val !== undefined));
+  const preview = ConfigSchema.parse({ ...config, ...cleanUserConfig });
+  const keys = Object.keys(preview) as (keyof Config)[];
   keys.forEach(<T extends keyof Config>(key: T) => (config[key] = userConfig[key] ?? config[key]));
 }
 
@@ -84,9 +109,13 @@ export async function initElement(element: HTMLDivElement) {
   if (instances.has(element)) return;
 
   if (element.hasAttribute('data-lettercrap-text')) {
-    const text = element.getAttribute('data-lettercrap-text') ?? undefined;
-    const font_family = element.getAttribute('data-lettercrap-font-family') ?? undefined;
-    const font_weight = element.getAttribute('data-lettercrap-font-weight') ?? undefined;
+    const text = NonBlankStringSchema.parse(element.getAttribute('data-lettercrap-text') ?? config.content);
+    const font_family = FontFamilySchema.parse(
+      element.getAttribute('data-lettercrap-font-family') ?? config.font_family
+    );
+    const font_weight = FontWeightSchema.parse(
+      element.getAttribute('data-lettercrap-font-weight') ?? config.font_weight
+    );
     const svg = createSVG(text, font_family, font_weight);
     const data = await getImageData(svg);
     element.setAttribute('data-lettercrap', data.toString());
@@ -106,7 +135,11 @@ export async function initElement(element: HTMLDivElement) {
     };
   });
 
-  function createSVG(content = config.content, font_family = config.font_family, font_weight = config.font_weight) {
+  function createSVG(
+    content: Config['content'],
+    font_family: Config['font_family'],
+    font_weight: Config['font_weight']
+  ) {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     text.setAttributeNS(null, 'x', '50%');
@@ -159,10 +192,10 @@ function render(element: HTMLDivElement, image: HTMLImageElement) {
   const aspect = aspectAttr || image.height / image.width;
   resetText();
 
-  const letters = element.getAttribute('data-lettercrap-letters') ?? config.letters;
-  const words = element.getAttribute('data-lettercrap-words')?.split(' ') ?? config.words;
-  const interval = parseInt(
-    element.getAttribute('data-lettercrap-update-interval') ?? config.update_interval.toString()
+  const letters = NonBlankStringSchema.parse(element.getAttribute('data-lettercrap-letters') ?? config.letters).trim();
+  const words = WordsSchema.parse(element.getAttribute('data-lettercrap-words')?.split(' ') ?? config.words);
+  const interval = UpdateIntervalSchema.parse(
+    parseInt(element.getAttribute('data-lettercrap-update-interval') ?? config.update_interval.toString())
   );
   const observer = new ResizeObserver(resetText);
   observer.observe(element);
