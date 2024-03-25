@@ -1,3 +1,8 @@
+/*!
+ * @licence MIT (https://lettercrap.github.io/lettercrap/LICENSE)
+ * @author Ozren Dabić
+ * @author Davide Ciulla
+ */
 import { z } from 'zod';
 
 import {
