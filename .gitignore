@@ -1,6 +1,7 @@
 ### Project template
 *.min.js
 *.min.css
+*/LICENSE
 
 ### VisualStudioCode template
 # General

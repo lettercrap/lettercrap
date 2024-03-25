@@ -20,7 +20,7 @@
     "build:types": "tsc --emitDeclarationOnly",
     "build": "npm-run-all --parallel build:*",
     "prebuild": "npm run clean",
-    "postbuild": "copyfiles -f dist/lettercrap.min.* example",
+    "postbuild": "copyfiles -f LICENSE dist/lettercrap.min.* example",
     "prepare": "husky",
     "clean": "rimraf dist"
   },
