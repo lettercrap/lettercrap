@@ -9,6 +9,11 @@ import {
   WordsSchema,
 } from './schemas.ts';
 
+/**
+ * Default settings for Lettercrap.
+ *
+ * @since 1.0.0
+ */
 export type Config = z.infer<typeof ConfigSchema>;
 
 const config: Config = {
@@ -20,6 +25,13 @@ const config: Config = {
   update_interval: 150,
 };
 
+/**
+ * Configure the default settings for Lettercrap.
+ *
+ * @param userConfig - The user configuration to apply.
+ * @throws z.ZodError - If the provided configuration contains invalid values.
+ * @since 1.0.0
+ */
 export function configure(userConfig: Partial<Config>) {
   const cleanUserConfig = Object.fromEntries(Object.entries(userConfig).filter(([_key, val]) => val !== undefined));
   const preview = ConfigSchema.parse({ ...config, ...cleanUserConfig });
@@ -44,12 +56,33 @@ class InitializedInstance {
   }
 }
 
+/**
+ * Re-render all initialized Lettercrap elements.
+ * This is useful when synchronizing previously
+ * initialized elements with the current configuration.
+ *
+ * @returns A promise that resolves when all elements have been refreshed.
+ * @throws Error - If any of the elements can not be re-initialized.
+ * @since 1.0.0
+ * @see resetElements
+ * @see initElements
+ * @async
+ */
 export async function refresh() {
   const elements = Array.from(instances.keys());
   await resetElements(elements);
   await initElements(elements);
 }
 
+/**
+ * Reset the specified element.
+ *
+ * @param element - The element to reset.
+ * @returns A promise that resolves when the element has been reset.
+ * @throws Error - If the specified element is not initialized.
+ * @since 1.0.0
+ * @async
+ */
 export async function resetElement(element: HTMLDivElement) {
   return new Promise<void>((resolve, reject) => {
     const metadata = instances.get(element);
@@ -69,23 +102,70 @@ export async function resetElement(element: HTMLDivElement) {
   });
 }
 
+/**
+ * Reset all specified elements.
+ *
+ * @param elements - The elements to reset.
+ * @returns A promise that resolves when all elements have been reset.
+ * @throws Error - If any of the specified elements are not initialized.
+ * @since 1.0.0
+ * @see resetElement
+ * @async
+ */
 export async function resetElements(elements: HTMLDivElement[]) {
   return Promise.all(Array.from(elements).map(resetElement));
 }
 
+/**
+ * Reset all initialized elements.
+ *
+ * @returns A promise that resolves when all elements have been reset.
+ * @throws Error - If any of the elements can not be re-initialized.
+ * @since 1.0.0
+ * @see resetElements
+ * @async
+ */
 export async function reset() {
   return resetElements(Array.from(instances.keys()));
 }
 
+/**
+ * Initialize all Lettercrap elements.
+ *
+ * @returns A promise that resolves when all elements have been initialized.
+ * @throws Error - If any of the elements can not be initialized.
+ * @since 1.0.0
+ * @see initElements
+ * @async
+ */
 export async function init() {
   const elements = document.querySelectorAll<HTMLDivElement>('div[data-lettercrap], div[data-lettercrap-text]');
   return initElements(Array.from(elements));
 }
 
+/**
+ * Initialize the specified elements.
+ *
+ * @param elements - The elements to initialize.
+ * @returns A promise that resolves when all elements have been initialized.
+ * @throws Error - If any of the elements can not be initialized.
+ * @since 1.0.0
+ * @see initElement
+ * @async
+ */
 export async function initElements(elements: HTMLDivElement[]) {
   return Promise.all(Array.from(elements).map(initElement));
 }
 
+/**
+ * Initialize the specified element.
+ *
+ * @param element - The element to initialize.
+ * @returns A promise that resolves when the element has been initialized.
+ * @throws Error - If the specified element can not be initialized.
+ * @since 1.0.0
+ * @async
+ */
 export async function initElement(element: HTMLDivElement) {
   if (instances.has(element)) return;
 
