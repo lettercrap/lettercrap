@@ -64,5 +64,22 @@
   },
   "dependencies": {
     "zod": "^3.22.4"
-  }
+  },
+  "keywords": [
+    "ascii",
+    "ascii art",
+    "ascii art generator",
+    "ascii graphics",
+    "creative text rendering",
+    "dynamic ascii art",
+    "image-to-ascii art",
+    "javascript",
+    "lettercrap",
+    "text-to-ascii art",
+    "text art",
+    "text art generator",
+    "typescript",
+    "visual effects",
+    "web graphics"
+  ]
 }
