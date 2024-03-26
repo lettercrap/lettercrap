@@ -157,14 +157,14 @@ You can also configure how the library behaves by using the exported `configure`
 
 The following table shows the correspondence between the global `Config` properties and the per-instance `data` equivalents:
 
-| Global `Config` property | Per-instance `data` equivalent |
-| ------------------------ | ------------------------------ |
-| `content`                | `data-lettercrap`              |
-| `letters`                | `data-lettercrap-letters`      |
-| `words`                  | `data-lettercrap-words`        |
-| `font_family`            | `data-lettercrap-font-family`  |
-| `font_weight`            | `data-lettercrap-font-weight`  |
-| `update_interval`        | `data-lettercrap-interval`     |
+| Global `Config` property | Per-instance `data` equivalent | Accepted values                                                             |
+| ------------------------ | ------------------------------ | --------------------------------------------------------------------------- |
+| `content`                | `data-lettercrap`              | Non-blank string                                                            |
+| `letters`                | `data-lettercrap-letters`      | Non-blank string                                                            |
+| `words`                  | `data-lettercrap-words`        | Non-blank string array                                                      |
+| `font_family`            | `data-lettercrap-font-family`  | [font-family](https://developer.mozilla.org/en-US/docs/Web/CSS/font-family) |
+| `font_weight`            | `data-lettercrap-font-weight`  | [font-weight](https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight) |
+| `update_interval`        | `data-lettercrap-interval`     | Positive integer or zero                                                    |
 
 Please note that changes to default options will not propagate to instances that have already been rendered.
 To synchronize the rendered instances that rely on default settings, you can call the `refresh` function:
