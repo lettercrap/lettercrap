@@ -1,5 +1,6 @@
 ### Project template
 *.min.js
+*.min.d.ts
 *.min.css
 */LICENSE
 
