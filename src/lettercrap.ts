@@ -47,7 +47,7 @@ const fontWeights = [
  * Configure the default settings for Lettercrap.
  *
  * @param userConfig - The user configuration to apply.
- * @throws z.ZodError - If the provided configuration contains invalid values.
+ * @throws Error - If the provided configuration contains invalid values.
  * @since 1.0.0
  */
 export function configure(userConfig: Partial<Config>) {
