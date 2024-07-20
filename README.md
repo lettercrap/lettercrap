@@ -10,14 +10,13 @@ _Lettercrap_ is a JavaScript library that uses an image mask to generate dynamic
 
 ## Usage
 
-To use the library in the browser, include _both_ `lettercrap.min.js` and `lettercrap.min.css` as follows:
+To use the library in the browser, include `lettercrap.min.js` as follows:
 
 ```html
 <!doctype html>
 <html lang="en">
   <head>
     <title />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@lettercrap/web/dist/lettercrap.min.css" />
   </head>
   <body>
     <!-- TARGETED ELEMENTS GO HERE -->
