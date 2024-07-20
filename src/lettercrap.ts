@@ -27,6 +27,15 @@ const config: Config = {
   update_interval: 150,
 };
 
+const style: Partial<CSSStyleDeclaration> = {
+  padding: '0',
+  fontFamily: 'monospace',
+  fontSize: '10px',
+  lineHeight: '10px',
+  whiteSpace: 'pre',
+  overflow: 'hidden',
+};
+
 const fontWeights = [
   '100',
   '200',
@@ -187,6 +196,7 @@ export async function initElements(elements: HTMLDivElement[]) {
  */
 export async function initElement(element: HTMLDivElement) {
   if (instances.has(element)) return;
+  Object.assign(element.style, style);
 
   if (element.hasAttribute('data-lettercrap-text')) {
     const text = element.getAttribute('data-lettercrap-text') ?? config.content;
