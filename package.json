@@ -4,7 +4,6 @@
   "description": "Reincarnation of a JavaScript library that generates dynamic ASCII art on the web",
   "main": "dist/lettercrap.min.js",
   "types": "dist/types/index.d.ts",
-  "style": "dist/lettercrap.min.css",
   "files": [
     "dist/"
   ],
@@ -15,9 +14,7 @@
     "format:staged": "pretty-quick --staged",
     "predev": "npm run build",
     "dev": "http-server -o example/index.html -s -c-1 -p 8080",
-    "build:ts": "tsup",
-    "build:css": "cleancss src/lettercrap.css --output dist/lettercrap.min.css",
-    "build": "run-s build:*",
+    "build": "tsup",
     "prebuild": "rimraf example/lettercrap.min.*",
     "postbuild": "copyfiles -f LICENSE dist/lettercrap.min.* example",
     "prepare": "husky"
