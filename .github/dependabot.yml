@@ -1,7 +1,6 @@
 version: 2
 updates:
   - package-ecosystem: github-actions
-    versioning-strategy: increase
     directory: /
     schedule:
       interval: daily
@@ -9,7 +8,6 @@ updates:
     labels:
       - dependencies
   - package-ecosystem: npm
-    versioning-strategy: increase
     directory: /
     schedule:
       interval: daily
