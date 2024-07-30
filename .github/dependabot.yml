@@ -14,3 +14,4 @@ updates:
     target-branch: master
     labels:
       - dependencies
+    versioning-strategy: increase
