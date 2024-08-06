@@ -5,6 +5,7 @@ import globals from 'globals';
 import { FlatCompat } from '@eslint/eslintrc';
 import typescriptEslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,7 +19,8 @@ export default [
   {
     ignores: ['dist/**', 'node_modules/**', 'package*.json', 'example/lettercrap.min.*'],
   },
-  ...compat.extends('eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'),
+  ...compat.extends('eslint:recommended', 'plugin:@typescript-eslint/recommended'),
+  eslintPluginPrettierRecommended,
   {
     plugins: { '@typescript-eslint': typescriptEslint },
     languageOptions: {
