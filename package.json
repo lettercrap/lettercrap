@@ -55,7 +55,7 @@
     "rimraf": "^6.0.1",
     "tsup": "~8.2.4",
     "typescript": "^5.5.4",
-    "typescript-eslint": "^7.18.0"
+    "typescript-eslint": "^8.0.1"
   },
   "keywords": [
     "ascii",
